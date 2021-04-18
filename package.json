@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "axios": "^0.21.1",
+    "http-server": "^0.12.3"
+  },
+  "name": "vanillajs",
+  "version": "1.0.0",
+  "description": "bootstrap-5 with vanillajs",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "http-server -p 4000",
+    "test": "http-server -p 4000"
+  },
+  "author": "spicydynaxx",
+  "license": "ISC"
+}
