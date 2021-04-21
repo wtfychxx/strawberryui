@@ -45,16 +45,13 @@
         subClass.__proto__ = superClass;
     }
 
-
-    // Strawberry-ui.js
-
-    let MAX_UID = 1000000;
-    let MILLISECONDS_MULTIPLIER = 1000;
-    let TRANSITION_END = 'transitionend';
+    const MAX_UID = 1000000;
+    const MILLISECONDS_MULTIPLIER = 1000;
+    const TRANSITION_END = 'transitionend';
 
     const toType = (obj) => {
         if (obj === null || obj === undefined) {
-            return "" + obj;
+            return `${obj}`;
         }
         return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
     };
@@ -63,49 +60,59 @@
 
     const getUID = (prefix) => {
         do {
-            preifx += Math.floor(Math.random() * MAX_UID);
+            prefix += Math.floor(Math.random() * MAX_UID);
         } while (document.getElementById(prefix));
 
         return prefix;
-    }
+    };
 
     const getSelector = (element) => {
         let selector = element.getAttribute('data-target');
 
         if (!selector || selector === '#') {
             let hrefAttr = element.getAttribute('href');
+
+            if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startWith('.')) {
+                return null;
+            }
+
+            if (hrefAttr.includes('#' && !hrefAttr.startWith('#'))) {
+                hrefAttr = '#' + hrefAttr.split('#')[1];
+            }
+
             selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;
         }
 
         return selector;
-    }
+    };
 
     const getSelectorFromElement = (element) => {
-        let selector = getSelector(element);
+        const selector = getSelector(element);
 
         if (selector) {
-            return document.getElementById(selector) ? selector : null;
+            return document.querySelector(selector) ? selector : null;
         }
 
         return null;
-    }
+    };
 
     const getElementFromSelector = (element) => {
-        let selector = getSelector(element);
+        const selector = getSelector(element);
         return selector ? document.querySelector(selector) : null;
-    }
+    };
 
     const getTransitionDurationFromElement = (element) => {
         if (!element) {
             return 0;
         }
 
-        let _window$getComputedSt = window.getComputedStyle(element),
-            transitionDuration = _window$getComputedSt.transitionDuration,
-            transitionDelay = _window$getComputedSt.transitionDelay;
+        let {
+            transitionDuration,
+            transitionDelay
+        } = window.getComputedStyle(element);
 
-        let floatTransitionDuration = parseFloat(transitionDuration);
-        let floatTransitionDelay = parseFloat(transitionDelay);
+        const floatTransitionDuration = Number.parseFloat(transitionDuration);
+        const floatTransitionDelay = Number.parseFloat(transitionDelay);
 
         if (!floatTransitionDuration && !floatTransitionDelay) {
             return 0;
@@ -113,44 +120,44 @@
 
         transitionDuration = transitionDuration.split(',')[0];
         transitionDelay = transitionDelay.split(',')[0];
-        return (parseFloat(transitionDuration) + parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;
-    }
+        return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;
+    };
 
     const triggerTransitionEnd = (element) => {
         element.dispatchEvent(new Event(TRANSITION_END));
     }
 
-    const isElement = (obj) => {
-        return (obj[0] || obj).modeType;
-    }
+    const isElement$1 = (obj) => (obj[0] || obj).nodeType;
 
     const emulateTransitionEnd = (element, duration) => {
         let called = false;
-        let durationPadding = 5;
-        let emulatedDuration = duration + durationPadding;
+        const durationPadding = 5;
+        const emulatedDuration = duration + durationPadding;
 
         function listener() {
             called = true;
             element.removeEventListener(TRANSITION_END, listener)
-            setTimeout(() => {
-                if (!called) {
-                    triggerTransitionEnd(element);
-                }
-            }, emulatedDuration);
         }
+
+        element.addEventListener(TRANSITION_END, listener);
+        setTimeout(() => {
+            if (!called) {
+                triggerTransitionEnd(element);
+            }
+        }, emulatedDuration);
     }
 
     const typeCheckConfig = (componentName, config, configTypes) => {
         Object.keys(configTypes).forEach((property) => {
-            let expectedTypes = configTypes[property];
-            let value = config[property];
-            let valueType = value && isElement(value) ? 'element' : toType(value);
+            const expectedTypes = configTypes[property];
+            const value = config[property];
+            const valueType = value && isElement$1(value) ? 'element' : toType(value);
 
             if (!new RegExp(expectedTypes).test(valueType)) {
-                throw new Error(componentName.toUpperCase() + ": " + ("Option \"" + property + "\" provided type \"" + valueType + "\" ") + ("but expected type \"" + expectedTypes + "\"."));
+                throw new TypeError(`${componentName.toUpperCase()}: ` + `Option "${property}" provided type "${valueType}" ` + `but expected type "${expectedTypes}".`);
             }
-        })
-    }
+        });
+    };
 
     const isVisible = (element) => {
         if (!element) {
@@ -158,12 +165,28 @@
         }
 
         if (element.style && element.parentNode && element.parentNode.style) {
-            let elementStyle = getComputedStyle(element);
-            let parentNodeStyle = getComputedStyle(element.parentNode);
+            const elementStyle = getComputedStyle(element);
+            const parentNodeStyle = getComputedStyle(element.parentNode);
             return elementStyle.display !== 'none' && parentNodeStyle.display !== 'none' && elementStyle.visibility !== 'hidden';
         }
 
         return false;
+    };
+
+    const isDisabled = (element) => {
+        if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+            return true;
+        }
+
+        if (element.classList.contains('disabled')) {
+            return true;
+        }
+
+        if (typeof element.disabled !== 'undefined') {
+            return element.disabled;
+        }
+
+        return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
     }
 
     const findShadowRoot = (element) => {
@@ -172,7 +195,7 @@
         }
 
         if (typeof element.getRootNode === 'function') {
-            let root = element.getRootNode();
+            const root = element.getRootNode();
             return root instanceof ShadowRoot ? root : null;
         }
 
@@ -185,19 +208,20 @@
         }
 
         return findShadowRoot(element.parentNode);
-    }
+    };
 
     const noop = () => {
         return function() {};
-    }
+    };
 
     const reflow = (element) => {
         return element.offsetHeight;
     }
 
     const getjQuery = () => {
-        let _window = window,
-            jQuery = _window.jQuery;
+        const {
+            jQuery
+        } = window;
 
         if (jQuery && !document.body.hasAttribute('data-no-jquery')) {
             return jQuery;
@@ -213,6 +237,27 @@
             callback();
         }
     }
+
+    const isRTL = () => document.documentElement.dir === 'rtl';
+
+    const defineJQueryPlugin = (name, plugin) => {
+        onDOMContentLoaded(() => {
+            const $ = getjQuery();
+
+            if ($) {
+                const JQUERY_NO_CONFLICT = $.fn[name];
+                $.fn[name] = plugin.jQueryInterface;
+                $.fn[name].Constructor = plugin;
+
+                $.fn[name].noConflict = () => {
+                    $.fn[name] = JQUERY_NO_CONFLICT;
+                    return plugin.jQueryInterface;
+                };
+            }
+        })
+    }
+
+    const elementMap = new Map();
 
     const mapData = function() {
         const storeData = [];
@@ -245,20 +290,46 @@
     }();
 
     const Data = {
-        setData: (instance, key, data) => {
-            mapData.set(instance, key, data);
+        set(element, key, instance) {
+            if (!elementMap.has(element)) {
+                elementMap.set(element, new Map());
+            }
+
+            const instanceMap = elementMap.get(element);
+
+            if (!instanceMap.has(key) && instanceMap.size !== 0) {
+                console.error(`Strawberry doesn't allow more than one instance per element. Bound instance: ${Array.from(instanceMap.keys())[0]}.`);
+                return;
+            }
+
+            instanceMap.set(key, instance);
         },
-        getData: (instance, key) => {
-            return mapData.get(instance, key);
+
+        get(element, key) {
+            if (elementMap.has(element)) {
+                return elementMap.get(element).get(key) || null;
+            }
+
+            return null;
         },
-        removeData: (instance, key) => {
-            mapData.delete(instance, key);
+
+        remove(element, key) {
+            if (!elementMap.has(element)) {
+                return;
+            }
+
+            const instanceMap = elementMap.get(element);
+            instanceMap.delete(key);
+
+            if (instanceMap.size === 0) {
+                elementMap.delete(element);
+            }
         }
     }
 
-    let namespaceRegex = /[^.]*(?=\..*)\.|.*/;
-    let stripNameRegex = /\..*/;
-    let stripUidRegex = /::\d+$/;
+    const namespaceRegex = /[^.]*(?=\..*)\.|.*/;
+    const stripNameRegex = /\..*/;
+    const stripUidRegex = /::\d+$/;
     const eventRegistry = {};
 
     let uidEvent = 1;
@@ -267,14 +338,14 @@
         mouseleave: 'mouseout'
     };
 
-    const nativeEvents = ['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll'];
+    const nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);
 
     const getUidEvent = (element, uid) => {
-        return uid && uid + "::" + uidEvent++ || element.uidEvent || uidEvent++;
+        return uid && `${uid}::${uidEvent++}` || element.uidEvent || uidEvent++;
     }
 
     const getEvent = (element) => {
-        let uid = getUidEvent(element);
+        const uid = getUidEvent(element);
         element.uidEvent = uid;
         eventRegistry[uid] = eventRegistry[uid] || {};
         return eventRegistry[uid];
@@ -313,14 +384,10 @@
     }
 
     const findHandler = (events, handler, delegationSelector) => {
-        if (delegationSelector === void 0) {
-            delegateSelector = null;
-        }
-
-        let uidEventList = Object.keys(events);
+        const uidEventList = Object.keys(events);
 
         for (let i = 0, len = uidEventList.length; i < len; i++) {
-            let event = events[uidEventList[i]];
+            const event = events[uidEventList[i]];
 
             if (event.originalHandler === handler && event.delegationSelector === delegationSelector) {
                 return event;
@@ -331,17 +398,17 @@
     }
 
     const normalizeParams = (originalTypeEvent, handler, delegationFn) => {
-        let delegation = typeof handler === 'string';
-        let originalHandler = delegation ? delegationFn : handler;
+        const delegation = typeof handler === 'string';
+        const originalHandler = delegation ? delegationFn : handler;
 
         let typeEvent = originalTypeEvent.replace(stripNameRegex, "");
-        let custom = customEvents[typeEvent];
+        const custom = customEvents[typeEvent];
 
         if (custom) {
             typeEvent = custom;
         }
 
-        let isNative = nativeEvents.indexOf(typeEvent) > -1;
+        const isNative = nativeEvents.has(typeEvent);
 
         if (!isNative) {
             typeEvent = originalTypeEvent;
@@ -360,22 +427,18 @@
             delegationFn = null;
         }
 
-        let _normalizeParams = normalizeParams(originalTypeEvent, handler, delegationFn),
-            delegation = _normalizeParams[0],
-            originalHandler = _normalizeParams[1],
-            typeEvent = _normalizeParams[2];
-
-        let events = getEvent(element);
-        let handlers = events[typeEvent] || (events[typeEvent] = {});
-        let previousFn = findHandler(handlers, originalHandler, delegation ? handler : null);
+        const [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn);
+        const events = getEvent(element);
+        const handlers = events[typeEvent] || (events[typeEvent] = {});
+        const previousFn = findHandler(handlers, originalHandler, delegation ? handler : null);
 
         if (previousFn) {
             previousFn.oneOff = previousFn.oneOff && oneOff;
             return;
         }
 
-        let uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''));
-        let fn = delegation ? strawberryDelegationHandler(element, handler, delegationFn) : strawberryHandler(element, handler);
+        const uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''));
+        const fn = delegation ? strawberryDelegationHandler(element, handler, delegationFn) : strawberryHandler(element, handler);
         fn.delegationSelector = delegation ? handler : null;
         fn.originalHandler = originalHandler;
         fn.oneOff = oneOff;
@@ -385,7 +448,7 @@
     }
 
     const removeHandler = (element, events, typeEvent, handler, delegationSelector) => {
-        let fn = findHandler(events[typeEvent], handler, delegationSelector);
+        const fn = findHandler(events[typeEvent], handler, delegationSelector);
 
         if (!fn) {
             return;
@@ -396,72 +459,67 @@
     }
 
     const removeNamespacedHandlers = (element, events, typeEvent, namespace) => {
-        let storeElementEvent = events[typeEvent] || {};
+        const storeElementEvent = events[typeEvent] || {};
 
         Object.keys(storeElementEvent).forEach((handlerKey) => {
-            if (handlerKey.indexOf(namespace) > -1) {
-                let event = storeElementEvent[handlerKey];
+            if (handlerKey.includes(namespace)) {
+                const event = storeElementEvent[handlerKey];
                 removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
             }
         })
     }
 
     const EventHandler = {
-        on: (element, event, handler, delegationFn) => {
+        on(element, event, handler, delegationFn) {
             addHandler(element, event, handler, delegationFn, false);
         },
-        one: (element, event, handler, delegationFn) => {
+        one(element, event, handler, delegationFn) {
             addHandler(element, event, handler, delegationFn, true);
         },
-        off: (element, originalTypeEvent, handler, delegationFn) => {
+        off(element, originalTypeEvent, handler, delegationFn) {
             if (typeof originalTypeEvent !== 'string' || !element) {
                 return;
             }
 
-            let _normalizeParams2 = normalizeParams(originalTypeEvent, handler, delegationFn),
-                delegation = _normalizeParams2[0],
-                originalHandler = _normalizeParams2[1],
-                typeEvent = _normalizeParams2[2];
-
-            let inNamespace = typeEvent !== originalTypeEvent;
-            let events = getEvent(element);
-            let isNamespace = originalTypeEvent.charAt(0) === '.';
+            const [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn);
+            const inNamespace = typeEvent !== originalTypeEvent;
+            const events = getEvent(element);
+            const isNamespace = originalTypeEvent.charAt(0) === '.';
 
             if (typeof originalHandler !== 'undefined') {
                 if (!events || !events[typeEvent]) {
                     return;
                 }
 
-                removeHandler(element, events, typeEvent, originalHeader, delegation ? handler : null);
+                removeHandler(element, events, typeEvent, originalHandler, delegation ? handler : null);
                 return;
             }
 
             if (isNamespace) {
                 Object.keys(events).forEach((elementEvent) => {
                     removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
-                })
+                });
             }
 
-            let storeElementEvent = ecents[typeEvent] || {};
+            const storeElementEvent = events[typeEvent] || {};
             Object.keys(storeElementEvent).forEach((keyHandlers) => {
-                let handlerKey = keyHandlers.replace(stripUidRegex, '');
+                const handlerKey = keyHandlers.replace(stripUidRegex, '');
 
-                if (!inNamespace || originalTypeEvent.indexOf(handlerKey) > -1) {
-                    let event = storeElementEvent[keyHandlers];
-
+                if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
+                    const event = storeElementEvent[keyHandlers];
                     removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
                 }
             });
         },
-        trigger: (element, event, args) => {
+        trigger(element, event, args) {
             if (typeof event !== 'string' || !element) {
                 return null;
             }
 
-            let $ = getjQuery();
-            let typeEvent = event.replace(stripNameRegex, '');
-            let inNamespace = event !== typeEvent;
-            let isNative = nativeEvents.indexOf(typeEvent) > -1;
+            const $ = getjQuery();
+            const typeEvent = event.replace(stripNameRegex, '');
+            const inNamespace = event !== typeEvent;
+            const isNative = nativeEvents.has(typeEvent);
             let jQueryEvent;
             let bubbles = true;
             let nativeDispatch = true;
@@ -478,10 +536,10 @@
 
             if (isNative) {
                 evt = document.createEvent('HTMLEvents');
-                evt.initEvent(typeEevnt, bubbles, true);
+                evt.initEvent(typeEvent, bubbles, true);
             } else {
                 evt = new CustomEvent(event, {
-                    bubbles: bubbles,
+                    bubbles,
                     cancelable: true
                 });
             }
@@ -489,7 +547,7 @@
             if (typeof args !== 'undefined') {
                 Object.keys(args).forEach((key) => {
                     Object.defineProperty(evt, key, {
-                        get: () => {
+                        get() {
                             return args[key];
                         }
                     });
@@ -512,6 +570,98 @@
         }
     }
 
+    const VERSION = '1.0.0-alpha';
+
+    class BaseComponent {
+        constructor(element) {
+            element = typeof element === 'string' ? document.querySelector(element) : element;
+
+            if (!element) {
+                return;
+            }
+
+            this._element = element;
+            Data.set(this._element, this.constructor.DATA_KEY, this);
+        }
+
+        dispose() {
+            Data.remove(this._element, this.constructor.DATA_KEY);
+            this._element = null;
+        }
+
+        static getInstance(element) {
+            return Data.get(element, this.DATA_KEY);
+        }
+
+        static get VERSION() {
+            return VERSION;
+        }
+    }
+
+    function normalizeData(val) {
+        if (val === 'true') {
+            return true;
+        }
+
+        if (val === 'false') {
+            return false;
+        }
+
+        if (val === Number(val).toString()) {
+            return Number(val);
+        }
+
+        if (val === '' || val === 'null') {
+            return null;
+        }
+
+        return val;
+    }
+
+    function normalizeDataKey(key) {
+        return key.replace(/[A-Z]/g, function(chr) {
+            return "-" + chr.toLowerCase();
+        });
+    }
+
+    const Manipulator = {
+        setDataAttribute: function setDataAttribute(element, key, value) {
+            element.setAttribute("data-" + normalizeDataKey(key), value);
+        },
+        removeDataAttribute: function removeDataAttribute(element, key) {
+            element.removeAttribute("data-" + normalizeDataKey(key));
+        },
+        getDataAttributes: function getDataAttributes(element) {
+            if (!element) {
+                return {};
+            }
+
+            var attributes = _extends({}, element.dataset);
+
+            Object.keys(attributes).forEach(function(key) {
+                attributes[key] = normalizeData(attributes[key]);
+            });
+            return attributes;
+        },
+        getDataAttribute: function getDataAttribute(element, key) {
+            return normalizeData(element.getAttribute("data-" + normalizeDataKey(key)));
+        },
+        offset: function offset(element) {
+            var rect = element.getBoundingClientRect();
+            return {
+                top: rect.top + document.body.scrollTop,
+                left: rect.left + document.body.scrollLeft
+            };
+        },
+        position: function position(element) {
+            return {
+                top: element.offsetTop,
+                left: element.offsetLeft
+            };
+        }
+    };
+
+    // SelectorEngine.js
     let NODE_TEXT = 3;
     const SelectorEngine = {
         matches: (element, selector) => {
@@ -586,84 +736,84 @@
 
     // modal event js
 
-    let NAME$5 = 'modal';
-    let VERSION$5 = '5.0.0-alpha3';
-    let DATA_KEY$5 = 'bs.modal';
-    let EVENT_KEY$5 = "." + DATA_KEY$5;
-    let DATA_API_KEY$5 = '.data-api';
-    let ESCAPE_KEY$1 = 'Escape';
-    let Default$3 = {
+    const NAME$6 = 'modal';
+    const DATA_KEY$6 = 'bs.modal';
+    const EVENT_KEY$6 = `.${DATA_KEY$6}`;
+    const DATA_API_KEY$3 = '.data-api';
+    const ESCAPE_KEY$1 = 'Escape';
+    const Default$5 = {
         backdrop: true,
         keyboard: true,
-        focus: true,
-        show: true
+        focus: true
     };
-    let DefaultType$3 = {
+    const DefaultType$5 = {
         backdrop: '(boolean|string)',
         keyboard: 'boolean',
-        focus: 'boolean',
-        show: 'boolean'
+        focus: 'boolean'
     };
-    let EVENT_HIDE$2 = "hide" + EVENT_KEY$5;
-    let EVENT_HIDE_PREVENTED = "hidePrevented" + EVENT_KEY$5;
-    let EVENT_HIDDEN$2 = "hidden" + EVENT_KEY$5;
-    let EVENT_SHOW$2 = "show" + EVENT_KEY$5;
-    let EVENT_SHOWN$2 = "shown" + EVENT_KEY$5;
-    let EVENT_FOCUSIN = "focusin" + EVENT_KEY$5;
-    let EVENT_RESIZE = "resize" + EVENT_KEY$5;
-    let EVENT_CLICK_DISMISS = "click.dismiss" + EVENT_KEY$5;
-    let EVENT_KEYDOWN_DISMISS = "keydown.dismiss" + EVENT_KEY$5;
-    let EVENT_MOUSEUP_DISMISS = "mouseup.dismiss" + EVENT_KEY$5;
-    let EVENT_MOUSEDOWN_DISMISS = "mousedown.dismiss" + EVENT_KEY$5;
-    let EVENT_CLICK_DATA_API$5 = "click" + EVENT_KEY$5 + DATA_API_KEY$5;
-    let CLASS_NAME_SCROLLBAR_MEASURER = 'modal-scrollbar-measure';
-    let CLASS_NAME_BACKDROP = 'modal-backdrop';
-    let CLASS_NAME_OPEN = 'modal-open';
-    let CLASS_NAME_FADE = 'fade';
-    let CLASS_NAME_SHOW$2 = 'show';
-    let CLASS_NAME_STATIC = 'modal-static';
-    let SELECTOR_DIALOG = '.modal-dialog';
-    let SELECTOR_MODAL_BODY = '.modal-body';
-    let SELECTOR_DATA_TOGGLE$3 = '[data-toggle="modal"]';
-    let SELECTOR_DATA_DISMISS = '[data-dismiss="modal"]';
-    let SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
-    let SELECTOR_STICKY_CONTENT = '.sticky-top';
+    const EVENT_HIDE$3 = `hide${EVENT_KEY$6}`;
+    const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY$6}`;
+    const EVENT_HIDDEN$3 = `hidden${EVENT_KEY$6}`;
+    const EVENT_SHOW$3 = `show${EVENT_KEY$6}`;
+    const EVENT_SHOWN$3 = `shown${EVENT_KEY$6}`;
+    const EVENT_FOCUSIN$1 = `focusin${EVENT_KEY$6}`;
+    const EVENT_RESIZE = `resize${EVENT_KEY$6}`;
+    const EVENT_CLICK_DISMISS$2 = `click.dismiss${EVENT_KEY$6}`;
+    const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY$6}`;
+    const EVENT_MOUSEUP_DISMISS = `mouseup.dismiss${EVENT_KEY$6}`;
+    const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY$6}`;
+    const EVENT_CLICK_DATA_API$2 = `click${EVENT_KEY$6}${DATA_API_KEY$3}`;
+    const CLASS_NAME_SCROLLBAR_MEASURER = 'modal-scrollbar-measure';
+    const CLASS_NAME_BACKDROP = 'modal-backdrop';
+    const CLASS_NAME_OPEN = 'modal-open';
+    const CLASS_NAME_FADE$4 = 'fade';
+    const CLASS_NAME_SHOW$5 = 'show';
+    const CLASS_NAME_STATIC = 'modal-static';
+    const SELECTOR_DIALOG = '.modal-dialog';
+    const SELECTOR_MODAL_BODY = '.modal-body';
+    const SELECTOR_DATA_TOGGLE$2 = '[data-bs-toggle="modal"]';
+    const SELECTOR_DATA_DISMISS$2 = '[data-bs-dismiss="modal"]';
+    const SELECTOR_FIXED_CONTENT$1 = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
+    const SELECTOR_STICKY_CONTENT$1 = '.sticky-top';
 
-    var Modal = /*#__PURE__*/ function() {
-        function Modal(element, config) {
-            this._config = this._getConfig(config);
-            this._element = element;
-            this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, element);
-            this._backdrop = null;
-            this._isShown = false;
-            this._isBodyOverflowing = false;
-            this._ignoreBackdropClick = false;
-            this._isTransitioning = false;
-            this._scrollbarWidth = 0;
-            Data.setData(element, DATA_KEY$5, this);
-        } // Getters
+    class Modal extends BaseComponent {
+        constructor(element, config) {
+                super(element);
+                this._config = this._getConfig(config);
+                this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
+                this._backdrop = null;
+                this._isShown = false;
+                this._isBodyOverflowing = false;
+                this._ignoreBackdropClick = false;
+                this._isTransitioning = false;
+                this._scrollbarWidth = 0;
+            } // Getters
 
 
-        var _proto = Modal.prototype;
+        static get Default() {
+            return Default$5;
+        }
 
-        // Public
-        _proto.toggle = function toggle(relatedTarget) {
+        static get DATA_KEY() {
+                return DATA_KEY$6;
+            } // Public
+
+
+        toggle(relatedTarget) {
             return this._isShown ? this.hide() : this.show(relatedTarget);
-        };
+        }
 
-        _proto.show = function show(relatedTarget) {
-            var _this = this;
-
+        show(relatedTarget) {
             if (this._isShown || this._isTransitioning) {
                 return;
             }
 
-            if (this._element.classList.contains(CLASS_NAME_FADE)) {
+            if (this._isAnimated()) {
                 this._isTransitioning = true;
             }
 
-            var showEvent = EventHandler.trigger(this._element, EVENT_SHOW$2, {
-                relatedTarget: relatedTarget
+            const showEvent = EventHandler.trigger(this._element, EVENT_SHOW$3, {
+                relatedTarget
             });
 
             if (this._isShown || showEvent.defaultPrevented) {
@@ -682,25 +832,19 @@
 
             this._setResizeEvent();
 
-            EventHandler.on(this._element, EVENT_CLICK_DISMISS, SELECTOR_DATA_DISMISS, function(event) {
-                return _this.hide(event);
-            });
-            EventHandler.on(this._dialog, EVENT_MOUSEDOWN_DISMISS, function() {
-                EventHandler.one(_this._element, EVENT_MOUSEUP_DISMISS, function(event) {
-                    if (event.target === _this._element) {
-                        _this._ignoreBackdropClick = true;
+            EventHandler.on(this._element, EVENT_CLICK_DISMISS$2, SELECTOR_DATA_DISMISS$2, event => this.hide(event));
+            EventHandler.on(this._dialog, EVENT_MOUSEDOWN_DISMISS, () => {
+                EventHandler.one(this._element, EVENT_MOUSEUP_DISMISS, event => {
+                    if (event.target === this._element) {
+                        this._ignoreBackdropClick = true;
                     }
                 });
             });
 
-            this._showBackdrop(function() {
-                return _this._showElement(relatedTarget);
-            });
-        };
+            this._showBackdrop(() => this._showElement(relatedTarget));
+        }
 
-        _proto.hide = function hide(event) {
-            var _this2 = this;
-
+        hide(event) {
             if (event) {
                 event.preventDefault();
             }
@@ -709,7 +853,7 @@
                 return;
             }
 
-            var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE$2);
+            const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE$3);
 
             if (hideEvent.defaultPrevented) {
                 return;
@@ -717,9 +861,9 @@
 
             this._isShown = false;
 
-            var transition = this._element.classList.contains(CLASS_NAME_FADE);
+            const isAnimated = this._isAnimated();
 
-            if (transition) {
+            if (isAnimated) {
                 this._isTransitioning = true;
             }
 
@@ -727,38 +871,33 @@
 
             this._setResizeEvent();
 
-            EventHandler.off(document, EVENT_FOCUSIN);
+            EventHandler.off(document, EVENT_FOCUSIN$1);
 
-            this._element.classList.remove(CLASS_NAME_SHOW$2);
+            this._element.classList.remove(CLASS_NAME_SHOW$5);
 
-            EventHandler.off(this._element, EVENT_CLICK_DISMISS);
+            EventHandler.off(this._element, EVENT_CLICK_DISMISS$2);
             EventHandler.off(this._dialog, EVENT_MOUSEDOWN_DISMISS);
 
-            if (transition) {
-                var transitionDuration = getTransitionDurationFromElement(this._element);
-                EventHandler.one(this._element, TRANSITION_END, function(event) {
-                    return _this2._hideModal(event);
-                });
+            if (isAnimated) {
+                const transitionDuration = getTransitionDurationFromElement(this._element);
+                EventHandler.one(this._element, 'transitionend', event => this._hideModal(event));
                 emulateTransitionEnd(this._element, transitionDuration);
             } else {
                 this._hideModal();
             }
-        };
+        }
 
-        _proto.dispose = function dispose() {
-            [window, this._element, this._dialog].forEach(function(htmlElement) {
-                return EventHandler.off(htmlElement, EVENT_KEY$5);
-            });
+        dispose() {
+            [window, this._element, this._dialog].forEach(htmlElement => EventHandler.off(htmlElement, EVENT_KEY$6));
+            super.dispose();
             /**
              * `document` has 2 events `EVENT_FOCUSIN` and `EVENT_CLICK_DATA_API`
              * Do not move `document` in `htmlElements` array
              * It will remove `EVENT_CLICK_DATA_API` event that should remain
              */
 
-            EventHandler.off(document, EVENT_FOCUSIN);
-            Data.removeData(this._element, DATA_KEY$5);
+            EventHandler.off(document, EVENT_FOCUSIN$1);
             this._config = null;
-            this._element = null;
             this._dialog = null;
             this._backdrop = null;
             this._isShown = null;
@@ -766,25 +905,25 @@
             this._ignoreBackdropClick = null;
             this._isTransitioning = null;
             this._scrollbarWidth = null;
-        };
+        }
 
-        _proto.handleUpdate = function handleUpdate() {
+        handleUpdate() {
                 this._adjustDialog();
             } // Private
-        ;
 
-        _proto._getConfig = function _getConfig(config) {
-            config = _extends({}, Default$3, config);
-            typeCheckConfig(NAME$5, config, DefaultType$3);
+
+        _getConfig(config) {
+            config = {...Default$5,
+                ...config
+            };
+            typeCheckConfig(NAME$6, config, DefaultType$5);
             return config;
-        };
+        }
 
-        _proto._showElement = function _showElement(relatedTarget) {
-            var _this3 = this;
+        _showElement(relatedTarget) {
+            const isAnimated = this._isAnimated();
 
-            var transition = this._element.classList.contains(CLASS_NAME_FADE);
-
-            var modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
+            const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
 
             if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
                 // Don't move modal's DOM position
@@ -805,81 +944,70 @@
                 modalBody.scrollTop = 0;
             }
 
-            if (transition) {
+            if (isAnimated) {
                 reflow(this._element);
             }
 
-            this._element.classList.add(CLASS_NAME_SHOW$2);
+            this._element.classList.add(CLASS_NAME_SHOW$5);
 
             if (this._config.focus) {
                 this._enforceFocus();
             }
 
-            var transitionComplete = function transitionComplete() {
-                if (_this3._config.focus) {
-                    _this3._element.focus();
+            const transitionComplete = () => {
+                if (this._config.focus) {
+                    this._element.focus();
                 }
 
-                _this3._isTransitioning = false;
-                EventHandler.trigger(_this3._element, EVENT_SHOWN$2, {
-                    relatedTarget: relatedTarget
+                this._isTransitioning = false;
+                EventHandler.trigger(this._element, EVENT_SHOWN$3, {
+                    relatedTarget
                 });
             };
 
-            if (transition) {
-                var transitionDuration = getTransitionDurationFromElement(this._dialog);
-                EventHandler.one(this._dialog, TRANSITION_END, transitionComplete);
+            if (isAnimated) {
+                const transitionDuration = getTransitionDurationFromElement(this._dialog);
+                EventHandler.one(this._dialog, 'transitionend', transitionComplete);
                 emulateTransitionEnd(this._dialog, transitionDuration);
             } else {
                 transitionComplete();
             }
-        };
+        }
 
-        _proto._enforceFocus = function _enforceFocus() {
-            var _this4 = this;
+        _enforceFocus() {
+            EventHandler.off(document, EVENT_FOCUSIN$1); // guard against infinite focus loop
 
-            EventHandler.off(document, EVENT_FOCUSIN); // guard against infinite focus loop
-
-            EventHandler.on(document, EVENT_FOCUSIN, function(event) {
-                if (document !== event.target && _this4._element !== event.target && !_this4._element.contains(event.target)) {
-                    _this4._element.focus();
+            EventHandler.on(document, EVENT_FOCUSIN$1, event => {
+                if (document !== event.target && this._element !== event.target && !this._element.contains(event.target)) {
+                    this._element.focus();
                 }
             });
-        };
+        }
 
-        _proto._setEscapeEvent = function _setEscapeEvent() {
-            var _this5 = this;
-
+        _setEscapeEvent() {
             if (this._isShown) {
-                EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, function(event) {
-                    if (_this5._config.keyboard && event.key === ESCAPE_KEY$1) {
+                EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, event => {
+                    if (this._config.keyboard && event.key === ESCAPE_KEY$1) {
                         event.preventDefault();
-
-                        _this5.hide();
-                    } else if (!_this5._config.keyboard && event.key === ESCAPE_KEY$1) {
-                        _this5._triggerBackdropTransition();
+                        this.hide();
+                    } else if (!this._config.keyboard && event.key === ESCAPE_KEY$1) {
+                        this._triggerBackdropTransition();
                     }
                 });
             } else {
                 EventHandler.off(this._element, EVENT_KEYDOWN_DISMISS);
             }
-        };
+        }
 
-        _proto._setResizeEvent = function _setResizeEvent() {
-            var _this6 = this;
-
+        _setResizeEvent() {
             if (this._isShown) {
-                EventHandler.on(window, EVENT_RESIZE, function() {
-                    return _this6._adjustDialog();
-                });
+                EventHandler.on(window, EVENT_RESIZE, () => this._adjustDialog());
             } else {
                 EventHandler.off(window, EVENT_RESIZE);
             }
-        };
+        }
 
-        _proto._hideModal = function _hideModal() {
-            var _this7 = this;
-
+        _hideModal() {
             this._element.style.display = 'none';
 
             this._element.setAttribute('aria-hidden', true);
@@ -890,40 +1018,38 @@
 
             this._isTransitioning = false;
 
-            this._showBackdrop(function() {
+            this._showBackdrop(() => {
                 document.body.classList.remove(CLASS_NAME_OPEN);
 
-                _this7._resetAdjustments();
+                this._resetAdjustments();
 
-                _this7._resetScrollbar();
+                this._resetScrollbar();
 
-                EventHandler.trigger(_this7._element, EVENT_HIDDEN$2);
+                EventHandler.trigger(this._element, EVENT_HIDDEN$3);
             });
-        };
+        }
 
-        _proto._removeBackdrop = function _removeBackdrop() {
+        _removeBackdrop() {
             this._backdrop.parentNode.removeChild(this._backdrop);
 
             this._backdrop = null;
-        };
+        }
 
-        _proto._showBackdrop = function _showBackdrop(callback) {
-            var _this8 = this;
-
-            var animate = this._element.classList.contains(CLASS_NAME_FADE) ? CLASS_NAME_FADE : '';
+        _showBackdrop(callback) {
+            const isAnimated = this._isAnimated();
 
             if (this._isShown && this._config.backdrop) {
                 this._backdrop = document.createElement('div');
                 this._backdrop.className = CLASS_NAME_BACKDROP;
 
-                if (animate) {
-                    this._backdrop.classList.add(animate);
+                if (isAnimated) {
+                    this._backdrop.classList.add(CLASS_NAME_FADE$4);
                 }
 
                 document.body.appendChild(this._backdrop);
-                EventHandler.on(this._element, EVENT_CLICK_DISMISS, function(event) {
-                    if (_this8._ignoreBackdropClick) {
-                        _this8._ignoreBackdropClick = false;
+                EventHandler.on(this._element, EVENT_CLICK_DISMISS$2, event => {
+                    if (this._ignoreBackdropClick) {
+                        this._ignoreBackdropClick = false;
                         return;
                     }
 
@@ -931,185 +1057,174 @@
                         return;
                     }
 
-                    _this8._triggerBackdropTransition();
+                    if (this._config.backdrop === 'static') {
+                        this._triggerBackdropTransition();
+                    } else {
+                        this.hide();
+                    }
                 });
 
-                if (animate) {
+                if (isAnimated) {
                     reflow(this._backdrop);
                 }
 
-                this._backdrop.classList.add(CLASS_NAME_SHOW$2);
+                this._backdrop.classList.add(CLASS_NAME_SHOW$5);
 
-                if (!animate) {
+                if (!isAnimated) {
                     callback();
                     return;
                 }
 
-                var backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
-                EventHandler.one(this._backdrop, TRANSITION_END, callback);
+                const backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
+                EventHandler.one(this._backdrop, 'transitionend', callback);
                 emulateTransitionEnd(this._backdrop, backdropTransitionDuration);
             } else if (!this._isShown && this._backdrop) {
-                this._backdrop.classList.remove(CLASS_NAME_SHOW$2);
+                this._backdrop.classList.remove(CLASS_NAME_SHOW$5);
 
-                var callbackRemove = function callbackRemove() {
-                    _this8._removeBackdrop();
+                const callbackRemove = () => {
+                    this._removeBackdrop();
 
                     callback();
                 };
 
-                if (this._element.classList.contains(CLASS_NAME_FADE)) {
-                    var _backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
-
-                    EventHandler.one(this._backdrop, TRANSITION_END, callbackRemove);
-                    emulateTransitionEnd(this._backdrop, _backdropTransitionDuration);
+                if (isAnimated) {
+                    const backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
+                    EventHandler.one(this._backdrop, 'transitionend', callbackRemove);
+                    emulateTransitionEnd(this._backdrop, backdropTransitionDuration);
                 } else {
                     callbackRemove();
                 }
             } else {
                 callback();
             }
-        };
+        }
 
-        _proto._triggerBackdropTransition = function _triggerBackdropTransition() {
-                var _this9 = this;
+        _isAnimated() {
+            return this._element.classList.contains(CLASS_NAME_FADE$4);
+        }
 
-                if (this._config.backdrop === 'static') {
-                    var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
+        _triggerBackdropTransition() {
+                const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
 
-                    if (hideEvent.defaultPrevented) {
-                        return;
-                    }
+                if (hideEvent.defaultPrevented) {
+                    return;
+                }
 
-                    var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+                const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+
+                if (!isModalOverflowing) {
+                    this._element.style.overflowY = 'hidden';
+                }
+
+                this._element.classList.add(CLASS_NAME_STATIC);
+
+                const modalTransitionDuration = getTransitionDurationFromElement(this._dialog);
+                EventHandler.off(this._element, 'transitionend');
+                EventHandler.one(this._element, 'transitionend', () => {
+                    this._element.classList.remove(CLASS_NAME_STATIC);
 
                     if (!isModalOverflowing) {
-                        this._element.style.overflowY = 'hidden';
+                        EventHandler.one(this._element, 'transitionend', () => {
+                            this._element.style.overflowY = '';
+                        });
+                        emulateTransitionEnd(this._element, modalTransitionDuration);
                     }
+                });
+                emulateTransitionEnd(this._element, modalTransitionDuration);
 
-                    this._element.classList.add(CLASS_NAME_STATIC);
-
-                    var modalTransitionDuration = getTransitionDurationFromElement(this._dialog);
-                    EventHandler.off(this._element, TRANSITION_END);
-                    EventHandler.one(this._element, TRANSITION_END, function() {
-                        _this9._element.classList.remove(CLASS_NAME_STATIC);
-
-                        if (!isModalOverflowing) {
-                            EventHandler.one(_this9._element, TRANSITION_END, function() {
-                                _this9._element.style.overflowY = '';
-                            });
-                            emulateTransitionEnd(_this9._element, modalTransitionDuration);
-                        }
-                    });
-                    emulateTransitionEnd(this._element, modalTransitionDuration);
-
-                    this._element.focus();
-                } else {
-                    this.hide();
-                }
+                this._element.focus();
             } // ----------------------------------------------------------------------
             // the following methods are used to handle overflowing modals
             // ----------------------------------------------------------------------
-        ;
 
-        _proto._adjustDialog = function _adjustDialog() {
-            var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
 
-            if (!this._isBodyOverflowing && isModalOverflowing) {
-                this._element.style.paddingLeft = this._scrollbarWidth + "px";
+        _adjustDialog() {
+            const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+
+            if (!this._isBodyOverflowing && isModalOverflowing && !isRTL() || this._isBodyOverflowing && !isModalOverflowing && isRTL()) {
+                this._element.style.paddingLeft = `${this._scrollbarWidth}px`;
             }
 
-            if (this._isBodyOverflowing && !isModalOverflowing) {
-                this._element.style.paddingRight = this._scrollbarWidth + "px";
+            if (this._isBodyOverflowing && !isModalOverflowing && !isRTL() || !this._isBodyOverflowing && isModalOverflowing && isRTL()) {
+                this._element.style.paddingRight = `${this._scrollbarWidth}px`;
             }
-        };
+        }
 
-        _proto._resetAdjustments = function _resetAdjustments() {
+        _resetAdjustments() {
             this._element.style.paddingLeft = '';
             this._element.style.paddingRight = '';
-        };
+        }
 
-        _proto._checkScrollbar = function _checkScrollbar() {
-            var rect = document.body.getBoundingClientRect();
+        _checkScrollbar() {
+            const rect = document.body.getBoundingClientRect();
             this._isBodyOverflowing = Math.round(rect.left + rect.right) < window.innerWidth;
             this._scrollbarWidth = this._getScrollbarWidth();
-        };
+        }
 
-        _proto._setScrollbar = function _setScrollbar() {
-            var _this10 = this;
-
+        _setScrollbar() {
             if (this._isBodyOverflowing) {
-                // Note: DOMNode.style.paddingRight returns the actual value or '' if not set
-                //   while $(DOMNode).css('padding-right') returns the calculated value or 0 if not set
-                // Adjust fixed content padding
-                SelectorEngine.find(SELECTOR_FIXED_CONTENT).forEach(function(element) {
-                    var actualPadding = element.style.paddingRight;
-                    var calculatedPadding = window.getComputedStyle(element)['padding-right'];
-                    Manipulator.setDataAttribute(element, 'padding-right', actualPadding);
-                    element.style.paddingRight = parseFloat(calculatedPadding) + _this10._scrollbarWidth + "px";
-                }); // Adjust sticky content margin
+                this._setElementAttributes(SELECTOR_FIXED_CONTENT$1, 'paddingRight', calculatedValue => calculatedValue + this._scrollbarWidth);
 
-                SelectorEngine.find(SELECTOR_STICKY_CONTENT).forEach(function(element) {
-                    var actualMargin = element.style.marginRight;
-                    var calculatedMargin = window.getComputedStyle(element)['margin-right'];
-                    Manipulator.setDataAttribute(element, 'margin-right', actualMargin);
-                    element.style.marginRight = parseFloat(calculatedMargin) - _this10._scrollbarWidth + "px";
-                }); // Adjust body padding
+                this._setElementAttributes(SELECTOR_STICKY_CONTENT$1, 'marginRight', calculatedValue => calculatedValue - this._scrollbarWidth);
 
-                var actualPadding = document.body.style.paddingRight;
-                var calculatedPadding = window.getComputedStyle(document.body)['padding-right'];
-                Manipulator.setDataAttribute(document.body, 'padding-right', actualPadding);
-                document.body.style.paddingRight = parseFloat(calculatedPadding) + this._scrollbarWidth + "px";
+                this._setElementAttributes('body', 'paddingRight', calculatedValue => calculatedValue + this._scrollbarWidth);
             }
 
             document.body.classList.add(CLASS_NAME_OPEN);
-        };
+        }
 
-        _proto._resetScrollbar = function _resetScrollbar() {
-            // Restore fixed content padding
-            SelectorEngine.find(SELECTOR_FIXED_CONTENT).forEach(function(element) {
-                var padding = Manipulator.getDataAttribute(element, 'padding-right');
-
-                if (typeof padding !== 'undefined') {
-                    Manipulator.removeDataAttribute(element, 'padding-right');
-                    element.style.paddingRight = padding;
+        _setElementAttributes(selector, styleProp, callback) {
+            SelectorEngine.find(selector).forEach(element => {
+                if (element !== document.body && window.innerWidth > element.clientWidth + this._scrollbarWidth) {
+                    return;
                 }
-            }); // Restore sticky content and navbar-toggler margin
 
-            SelectorEngine.find("" + SELECTOR_STICKY_CONTENT).forEach(function(element) {
-                var margin = Manipulator.getDataAttribute(element, 'margin-right');
+                const actualValue = element.style[styleProp];
+                const calculatedValue = window.getComputedStyle(element)[styleProp];
+                Manipulator.setDataAttribute(element, styleProp, actualValue);
+                element.style[styleProp] = callback(Number.parseFloat(calculatedValue)) + 'px';
+            });
+        }
 
-                if (typeof margin !== 'undefined') {
-                    Manipulator.removeDataAttribute(element, 'margin-right');
-                    element.style.marginRight = margin;
+        _resetScrollbar() {
+            this._resetElementAttributes(SELECTOR_FIXED_CONTENT$1, 'paddingRight');
+
+            this._resetElementAttributes(SELECTOR_STICKY_CONTENT$1, 'marginRight');
+
+            this._resetElementAttributes('body', 'paddingRight');
+        }
+
+        _resetElementAttributes(selector, styleProp) {
+            SelectorEngine.find(selector).forEach(element => {
+                const value = Manipulator.getDataAttribute(element, styleProp);
+
+                if (typeof value === 'undefined' && element === document.body) {
+                    element.style[styleProp] = '';
+                } else {
+                    Manipulator.removeDataAttribute(element, styleProp);
+                    element.style[styleProp] = value;
                 }
-            }); // Restore body padding
+            });
+        }
 
-            var padding = Manipulator.getDataAttribute(document.body, 'padding-right');
-
-            if (typeof padding === 'undefined') {
-                document.body.style.paddingRight = '';
-            } else {
-                Manipulator.removeDataAttribute(document.body, 'padding-right');
-                document.body.style.paddingRight = padding;
-            }
-        };
-
-        _proto._getScrollbarWidth = function _getScrollbarWidth() {
+        _getScrollbarWidth() {
                 // thx d.walsh
-                var scrollDiv = document.createElement('div');
+                const scrollDiv = document.createElement('div');
                 scrollDiv.className = CLASS_NAME_SCROLLBAR_MEASURER;
                 document.body.appendChild(scrollDiv);
-                var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
+                const scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
                 document.body.removeChild(scrollDiv);
                 return scrollbarWidth;
             } // Static
-        ;
 
-        Modal.jQueryInterface = function jQueryInterface(config, relatedTarget) {
+
+        static jQueryInterface(config, relatedTarget) {
             return this.each(function() {
-                var data = Data.getData(this, DATA_KEY$5);
-
-                var _config = _extends({}, Default$3, Manipulator.getDataAttributes(this), typeof config === 'object' && config ? config : {});
+                let data = Data.get(this, DATA_KEY$6);
+                const _config = {...Default$5,
+                    ...Manipulator.getDataAttributes(this),
+                    ...(typeof config === 'object' && config ? config : {})
+                };
 
                 if (!data) {
                     data = new Modal(this, _config);
@@ -1117,95 +1232,50 @@
 
                 if (typeof config === 'string') {
                     if (typeof data[config] === 'undefined') {
-                        throw new TypeError("No method named \"" + config + "\"");
+                        throw new TypeError(`No method named "${config}"`);
                     }
 
                     data[config](relatedTarget);
-                } else if (_config.show) {
-                    data.show(relatedTarget);
                 }
             });
-        };
+        }
+    }
 
-        Modal.getInstance = function getInstance(element) {
-            return Data.getData(element, DATA_KEY$5);
-        };
-
-        _createClass(Modal, null, [{
-            key: "VERSION",
-            get: function get() {
-                return VERSION$5;
-            }
-        }, {
-            key: "Default",
-            get: function get() {
-                return Default$3;
-            }
-        }]);
-
-        return Modal;
-    }();
-
-    EventHandler.on(document, EVENT_CLICK_DATA_API$5, SELECTOR_DATA_TOGGLE$3, (event) => {
-        let _this11 = this;
-
-        let target = getElementFromSelector(this);
+    EventHandler.on(document, EVENT_CLICK_DATA_API$2, SELECTOR_DATA_TOGGLE$2, function(event) {
+        const target = getElementFromSelector(this);
 
         if (this.tagName === 'A' || this.tagName === 'AREA') {
             event.preventDefault();
         }
 
-        EventHandler.one(target, EVENT_SHOW$2, (showEvent) => {
+        EventHandler.one(target, EVENT_SHOW$3, showEvent => {
             if (showEvent.defaultPrevented) {
                 // only register focus restorer if modal will actually get shown
                 return;
             }
 
-            EventHandler.one(target, EVENT_HIDDEN$2, () => {
-                if (isVisible(_this11)) {
-                    _this11.focus();
+            EventHandler.one(target, EVENT_HIDDEN$3, () => {
+                if (isVisible(this)) {
+                    this.focus();
                 }
             });
         });
-        let data = Data.getData(target, DATA_KEY$5);
+        let data = Data.get(target, DATA_KEY$6);
 
         if (!data) {
-            let config = _extends({}, Manipulator.getDataAttributes(target), Manipulator.getDataAttributes(this));
-
+            const config = {...Manipulator.getDataAttributes(target),
+                ...Manipulator.getDataAttributes(this)
+            };
             data = new Modal(target, config);
         }
 
-        data.show(this);
+        data.toggle(this);
     });
 
-    onDOMContentLoaded(() => {
-        let $ = getjQuery();
-        /* istanbul ignore if */
-
-        if ($) {
-            let JQUERY_NO_CONFLICT = $.fn[NAME$5];
-            $.fn[NAME$5] = Modal.jQueryInterface;
-            $.fn[NAME$5].Constructor = Modal;
-
-            $.fn[NAME$5].noConflict = () => {
-                $.fn[NAME$5] = JQUERY_NO_CONFLICT;
-                return Modal.jQueryInterface;
-            };
-        }
-    });
+    defineJQueryPlugin(NAME$6, Modal);
 
     const index_umd = {
-        // Alert: Alert,
-        // Button: Button,
-        // Carousel: Carousel,
-        // Collapse: Collapse,
-        // Dropdown: Dropdown,
-        Modal: Modal,
-        // Popover: Popover,
-        // ScrollSpy: ScrollSpy,
-        // Tab: Tab,
-        // Toast: Toast,
-        // Tooltip: Tooltip
+        Modal
     };
 
     return index_umd;
