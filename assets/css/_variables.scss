@@ -1,0 +1,54 @@
+// color variables
+$primary: #0984e3;
+$secondary: #2d3436;
+$danger: #eb4d4b;
+$warning: #f9ca24;
+$info: #00cec9;
+$success: #10ac84;
+$gradient-primary: #0097e6,
+#4834d4;
+$gradient-secondary: #a4b0be,
+#57606f;
+$gradient-danger: #ff6b81,
+#c23616;
+$gradient-warning: #f9ca24,
+#ee5a24;
+$gradient-info: #00d8d6,
+#10ac84;
+// gutter variables
+$gutter-x: 1.5rem;
+$gutter-y: 0;
+// table variables
+$table-bg: transparent;
+$table-accent-bg: transparent;
+$table-striped-color: #212529;
+$table-striped-bg: rgba(0, 0, 0, 0.05);
+$table-active-bg: rgba(0, 0, 0, 0.1);
+$tahle-hover-color: #212529;
+$table-hover-bg: rgba(0, 0, 0, 0.075);
+// card variables
+$primary-card: hsl(222, 80%, 50%);
+$primary-card-light: hsl(222, 50%, 95%);
+$secondary: hsl(350, 80%, 50%);
+$red: hs l(10, 80%, 50%);
+$orange: hsl(50, 80%, 50%);
+// grid variables
+$color-header: #0d0d0d;
+$color-text: #404040;
+$color-btn-text: #3363ff;
+$color-btn-background: #e6ecff;
+$transition: .2s;
+// spacer variables
+$spacer: 5px;
+$padding-1: 5px;
+$padding-2: 15px;
+$padding-3: 25px;
+$padding-4: 35px;
+$padding-5: 45px;
+$spacer-1: $spacer * 1;
+$spacer-2: $spacer * 2;
+$spacer-3: $spacer * 3;
+$spacer-4: $spacer * 5;
+$spacer-5: $spacer * 7;
+// scroll variables
+$scroll-height: 75vh;

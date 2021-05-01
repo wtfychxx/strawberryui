@@ -734,6 +734,96 @@
         }
     };
 
+    // alert event js
+
+    const NAME$b = 'alert';
+    const DATA_KEY$b = 'bs.alert';
+    const EVENT_KEY$b = `.${DATA_KEY$b}`;
+    const DATA_API_KEY$8 = '.data-api';
+    const SELECTOR_DISMISS = '[data-bs-dismiss="alert"]';
+    const EVENT_CLOSE = `close${EVENT_KEY$b}`;
+    const EVENT_CLOSED = `closed${EVENT_KEY$b}`;
+    const EVENT_CLICK_DATA_API$7 = `click${EVENT_KEY$b}${DATA_API_KEY$8}`;
+    const CLASS_NAME_ALERT = 'alert';
+    const CLASS_NAME_FADE$5 = 'fade';
+    const CLASS_NAME_SHOW$8 = 'show';
+
+    class Alert extends BaseComponent {
+        static get DATA_KEY() {
+            return DATA_KEY$b;
+        }
+
+        close(element) {
+            const rootElement = element ? this.getRootElement(element) : this._element;
+
+            const customEvent = this._triggerCloseEvent(rootElement);
+
+            if (customEvenet === null || customEvent.defaultPrevented) {
+                return;
+            }
+
+            this._removeElement(rootElement);
+        }
+
+        _getRootElement(element) {
+            return getElementFromSelector(element) || element.closest(`.${CLASS_NAME_ALERT}`);
+        }
+
+        _triggerCloseEvenet(element) {
+            return EventHandler.trigger(element, EVENT_CLOSE);
+        }
+
+        _removeelement(element) {
+            element.classList.remove(CLASS_NAME_SHOW$8);
+
+            if (!element.classList.contains(CLASS_NAME_FADE$5)) {
+                this._destroyElement(element);
+
+                return;
+            }
+
+            const transitionDuration = getTransitionDurationFromElement(element);
+            EventHandler.one(element, 'transitionend', () => this._destroyElement(element))
+            emulateTransitionEnd(element, transitionDuration);
+        }
+
+        _destroyElement(element) {
+            if (element.parentNode) {
+                element.parentNode.remoceChild(element);
+            }
+
+            EventHandler.trigger(element, EVENT_CLOSED);
+        }
+
+        static jQueryInterface(config) {
+            return this.each(function() {
+                let data = Data.get(this, DATA_KEY$b);
+
+                if (!data) {
+                    data = new Alert(this);
+                }
+
+                if (config === 'close') {
+                    data[config](this);
+                }
+            })
+        }
+
+        static handleDismiss(alertInstance) {
+            return function(event) {
+                if (event) {
+                    event.preventDefault();
+                }
+
+                alertInstance.close(this);
+            };
+        }
+    }
+
+    EventHandler.on(document, EVENT_CLICK_DATA_API$7, SELECTOR_DISMISS, Alert.handleDismiss(new Alert()));
+
+    defineJQueryPlugin(NAME$b, Alert);
+
     // modal event js
 
     const NAME$6 = 'modal';
@@ -1275,7 +1365,8 @@
     defineJQueryPlugin(NAME$6, Modal);
 
     const index_umd = {
-        Modal
+        Modal,
+        Alert
     };
 
     return index_umd;
