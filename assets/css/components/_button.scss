@@ -17,7 +17,7 @@
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     border-radius: .25rem;
-    box-shadow: 0 20px 30px -6px #535c68;
+    // box-shadow: 0 20px 30px -6px #535c68;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     &:hover {
         box-shadow: none;
@@ -86,4 +86,38 @@
 .btn-gradient-info {
     @include seGradienttBgColor($gradient-info);
     color: white;
+}
+
+.btn-gradient-info {
+    @include seGradienttBgColor($gradient-info);
+    color: white;
+}
+
+.btn-gradient-success {
+    @include seGradienttBgColor($gradient-success);
+    color: white;
+}
+
+.btn-outline-primary {
+    @include setOutlineBgColor($primary);
+}
+
+.btn-outline-secondary {
+    @include setOutlineBgColor($secondary);
+}
+
+.btn-outline-danger {
+    @include setOutlineBgColor($danger);
+}
+
+.btn-outline-warning {
+    @include setOutlineBgColor($warning);
+}
+
+.btn-outline-info {
+    @include setOutlineBgColor($info);
+}
+
+.btn-outline-success {
+    @include setOutlineBgColor($success);
 }

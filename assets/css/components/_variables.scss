@@ -1,8 +1,8 @@
 // color variables
 $primary: #0984e3;
-$secondary: #2d3436;
+$secondary: #636e72;
 $danger: #eb4d4b;
-$warning: #f9ca24;
+$warning: #f39c12;
 $info: #00cec9;
 $success: #10ac84;
 $gradient-primary: #0097e6,
@@ -15,6 +15,10 @@ $gradient-warning: #f9ca24,
 #ee5a24;
 $gradient-info: #00d8d6,
 #10ac84;
+$gradient-info: #00d8d6,
+#10ac84;
+$gradient-success: #2ecc71,
+#16a085;
 // gutter variables
 $gutter-x: 1.5rem;
 $gutter-y: 0;
@@ -29,7 +33,7 @@ $table-hover-bg: rgba(0, 0, 0, 0.075);
 // card variables
 $primary-card: hsl(222, 80%, 50%);
 $primary-card-light: hsl(222, 50%, 95%);
-$secondary: hsl(350, 80%, 50%);
+$secondary-card: hsl(350, 80%, 50%);
 $red: hs l(10, 80%, 50%);
 $orange: hsl(50, 80%, 50%);
 // grid variables

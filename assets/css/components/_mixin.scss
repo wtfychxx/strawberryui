@@ -22,6 +22,18 @@
     }
 }
 
+@mixin setOutlineBgColor($baseColor) {
+    background: #fff;
+    color: $baseColor;
+    border: solid 1px $baseColor;
+    transition: all .5s;
+    &:hover {
+        cursor: pointer;
+        color: #fff;
+        background-color: $baseColor;
+    }
+}
+
 @mixin flexConfiguration() {
     display: flex;
     flex-wrap: wrap;
