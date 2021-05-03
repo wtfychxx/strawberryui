@@ -1,0 +1,58 @@
+table {
+    caption-side: bottom;
+    border-collapse: collapse;
+}
+
+caption {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    color: #6c757d;
+    text-align: left;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    vertical-align: top;
+    border-color: #dee2e6;
+}
+
+.table> :not(caption)>*>* {
+    padding: .5rem .5rem;
+    background-color: $table-bg;
+    background-image: linear-gradient($table-accent-bg, table-accent-bg);
+    border-bottom-width: 1px;
+}
+
+.table {
+    tbody {
+        tr {
+            &:nth-of-type(odd) {
+                color: $table-striped-color
+            }
+        }
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-primary {
+    @include tableStyle($primary);
+}
+
+.table-info {
+    @include tableStyle($info);
+}
+
+.table-danger {
+    $danger: #c23616;
+    @include tableStyle($danger);
+}
+
+.table-warning {
+    @include tableStyle($warning);
+}

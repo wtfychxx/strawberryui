@@ -235,7 +235,6 @@ body {
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
-  border-radius: .25rem;
   -webkit-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
@@ -607,19 +606,19 @@ body {
 }
 
 .rounded {
-  border-radius: 0.2rem;
+  border-radius: 0.25rem;
 }
 
 .rounded-sm {
-  border-radius: 0.4rem;
+  border-radius: 0.5rem;
 }
 
 .rounded-md {
-  border-radius: 0.6rem;
+  border-radius: 0.75rem;
 }
 
 .rounded-lg {
-  border-radius: 0.8rem;
+  border-radius: 1rem;
 }
 
 .align-text-top {
@@ -634,36 +633,68 @@ body {
   display: inline-block !important;
 }
 
+.bg-primary {
+  background-color: #0984e3 !important;
+}
+
+.bg-secondary {
+  background-color: #636e72 !important;
+}
+
+.bg-danger {
+  background-color: #eb4d4b !important;
+}
+
+.bg-warning {
+  background-color: #f39c12 !important;
+}
+
+.bg-info {
+  background-color: #00cec9 !important;
+}
+
+.bg-success {
+  background-color: #10ac84 !important;
+}
+
 .bg-light {
-  background-color: #f8f9fa !important;
+  background-color: #f1f2f6 !important;
 }
 
-.mb-0 {
-  margin-bottom: 0 !important;
+.bg-dark {
+  background-color: #2f3542 !important;
 }
 
-.mb-1 {
-  margin-bottom: .25rem !important;
+.text-primary {
+  color: #0984e3 !important;
 }
 
-.mb-2 {
-  margin-bottom: .5rem !important;
+.text-secondary {
+  color: #636e72 !important;
 }
 
-.mb-3 {
-  margin-bottom: 1rem !important;
+.text-danger {
+  color: #eb4d4b !important;
 }
 
-.mb-4 {
-  margin-bottom: 1.5rem !important;
+.text-warning {
+  color: #f39c12 !important;
 }
 
-.mb-5 {
-  margin-bottom: 3rem !important;
+.text-info {
+  color: #00cec9 !important;
 }
 
-.mb-auto {
-  margin-bottom: auto !important;
+.text-success {
+  color: #10ac84 !important;
+}
+
+.text-light {
+  color: #2f3542 !important;
+}
+
+.text-dark {
+  color: #f1f2f6 !important;
 }
 
 table {

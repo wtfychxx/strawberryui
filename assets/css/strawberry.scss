@@ -4,66 +4,8 @@
 @import "components/_main";
 @import "components/_layout";
 @import "components/_button";
-.alert {
-    position: relative;
-    padding: 1rem 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: .25rem;
-    width: 100%
-}
-
-.alert-link {
-    font-weight: 700;
-}
-
-.alert-primary {
-    color: darken($primary, 10%);
-    background-color: lighten($primary, 40%);
-    border-color: lighten($primary, 30%);
-}
-
-.alert-info {
-    color: darken($info, 10%);
-    background-color: lighten($info, 50%);
-    border-color: lighten($info, 30%);
-}
-
-.alert-danger {
-    $danger: #eb3b5a;
-    color: darken($danger, 10%);
-    background-color: lighten($danger, 25%);
-    border-color: lighten($danger, 20%);
-}
-
-.alert-warning {
-    color: darken($warning, 20%);
-    background-color: lighten($warning, 25%);
-    border-color: lighten($warning, 20%);
-}
-
-.alert-success {
-    color: darken($success, 10%);
-    background-color: lighten($success, 25%);
-    border-color: lighten($success, 20%);
-}
-
-.rounded {
-    border-radius: 0.2rem;
-}
-
-.rounded-sm {
-    border-radius: 0.4rem;
-}
-
-.rounded-md {
-    border-radius: 0.6rem;
-}
-
-.rounded-lg {
-    border-radius: 0.8rem;
-}
-
+@import "components/_alert";
+@import "components/_rounded";
 .align-text-top {
     vertical-align: text-top !important;
 }
@@ -76,403 +18,72 @@
     display: inline-block !important;
 }
 
+.bg-primary {
+    background-color: $primary !important;
+}
+
+.bg-secondary {
+    background-color: $secondary !important;
+}
+
+.bg-danger {
+    background-color: $danger !important;
+}
+
+.bg-warning {
+    background-color: $warning !important;
+}
+
+.bg-info {
+    background-color: $info !important;
+}
+
+.bg-success {
+    background-color: $success !important;
+}
+
 .bg-light {
-    background-color: #f8f9fa !important;
+    background-color: $light !important;
 }
 
-.mb-0 {
-    margin-bottom: 0 !important;
+.bg-dark {
+    background-color: $dark !important;
 }
 
-.mb-1 {
-    margin-bottom: .25rem !important;
+.text-primary {
+    color: $primary !important;
 }
 
-.mb-2 {
-    margin-bottom: .5rem !important;
+.text-secondary {
+    color: $secondary !important;
 }
 
-.mb-3 {
-    margin-bottom: 1rem !important;
+.text-danger {
+    color: $danger !important;
 }
 
-.mb-4 {
-    margin-bottom: 1.5rem !important;
+.text-warning {
+    color: $warning !important;
 }
 
-.mb-5 {
-    margin-bottom: 3rem !important;
+.text-info {
+    color: $info !important;
 }
 
-.mb-auto {
-    margin-bottom: auto !important;
+.text-success {
+    color: $success !important;
 }
 
-table {
-    caption-side: bottom;
-    border-collapse: collapse;
+.text-light {
+    color: $dark !important;
 }
 
-caption {
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    color: #6c757d;
-    text-align: left;
+.text-dark {
+    color: $light !important;
 }
 
-.table {
-    width: 100%;
-    margin-bottom: 1rem;
-    color: #212529;
-    vertical-align: top;
-    border-color: #dee2e6;
-}
-
-.table> :not(caption)>*>* {
-    padding: .5rem .5rem;
-    background-color: $table-bg;
-    background-image: linear-gradient($table-accent-bg, table-accent-bg);
-    border-bottom-width: 1px;
-}
-
-.table {
-    tbody {
-        tr {
-            &:nth-of-type(odd) {
-                color: $table-striped-color
-            }
-        }
-    }
-}
-
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.table-primary {
-    @include tableStyle($primary);
-}
-
-.table-info {
-    @include tableStyle($info);
-}
-
-.table-danger {
-    $danger: #c23616;
-    @include tableStyle($danger);
-}
-
-.table-warning {
-    @include tableStyle($warning);
-}
-
-.modal-open {
-    overflow: hidden;
-}
-
-.modal-open .modal {
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1050;
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    outline: 0;
-}
-
-.modal-dialog {
-    position: relative;
-    width: auto;
-    margin: 0.5rem;
-    pointer-events: none;
-}
-
-.modal.fade .modal-dialog {
-    transition: transform 0.2s ease-out;
-    transform: translate(0, -50px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .modal.fade .modal-dialog {
-        transition: none;
-    }
-}
-
-.modal.show .modal-dialog {
-    transform: none;
-}
-
-.modal.modal-static .modal-dialog {
-    transform: scale(1.02);
-}
-
-.modal-dialog-scrollable {
-    height: calc(100% - 1rem);
-}
-
-.modal-dialog-scrollable .modal-content {
-    max-height: 100%;
-    overflow: hidden;
-}
-
-.modal-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    pointer-events: auto;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 0.5rem;
-    outline: 0;
-}
-
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1040;
-    width: 100vw;
-    height: 100vh;
-    background-color: #000;
-}
-
-.modal-backdrop.fade {
-    opacity: 0;
-}
-
-.modal-backdrop.show {
-    opacity: 0.5;
-}
-
-.modal-header {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1rem;
-    border-bottom: 1px solid #dee2e6;
-    border-top-left-radius: calc(0.3rem - 1px);
-}
-
-.modal-header .btn-close {
-    padding: 0.5rem 0.5rem;
-    margin: -0.5rem -0.5rem -0.5rem auto;
-}
-
-.modal-title {
-    margin-bottom: 0;
-    line-height: 1.5;
-}
-
-.modal-body {
-    position: relative;
-    flex: 1 1 auto;
-    padding: 1rem;
-}
-
-.modal-footer {
-    display: flex;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0.75rem;
-    border-top: 1px solid #dee2e6;
-    border-bottom-right-radius: calc(0.3rem - 1px);
-    border-bottom-left-radius: calc(0.3rem - 1px);
-}
-
-.modal-footer>* {
-    margin: 0.25rem;
-}
-
-.modal-scrollbar-measure {
-    position: absolute;
-    top: -9999px;
-    width: 50px;
-    height: 50px;
-    overflow: scroll;
-}
-
-@media (min-width: 576px) {
-    .modal-dialog {
-        max-width: 500px;
-        margin: 1.75rem auto;
-    }
-    .modal-dialog-scrollable {
-        height: calc(100% - 3.5rem);
-    }
-    .modal-dialog-centered {
-        min-height: calc(100% - 3.5rem);
-    }
-    .modal-sm {
-        max-width: 300px;
-    }
-}
-
-@media (min-width: 992px) {
-    .modal-lg,
-    .modal-xl {
-        max-width: 800px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .modal-xl {
-        max-width: 1140px;
-    }
-}
-
-.modal-fullscreen {
-    width: 100vw;
-    max-width: none;
-    height: 100%;
-    margin: 0;
-}
-
-.modal-fullscreen .modal-content {
-    height: 100%;
-    border: 0;
-    border-radius: 0;
-}
-
-.modal-fullscreen .modal-header {
-    border-radius: 0;
-}
-
-.modal-fullscreen .modal-body {
-    overflow-y: auto;
-}
-
-.modal-fullscreen .modal-footer {
-    border-radius: 0;
-}
-
-@media (max-width: 575.98px) {
-    .modal-fullscreen-sm-down {
-        width: 100vw;
-        max-width: none;
-        height: 100%;
-        margin: 0;
-    }
-    .modal-fullscreen-sm-down .modal-content {
-        height: 100%;
-        border: 0;
-        border-radius: 0;
-    }
-    .modal-fullscreen-sm-down .modal-header {
-        border-radius: 0;
-    }
-    .modal-fullscreen-sm-down .modal-body {
-        overflow-y: auto;
-    }
-    .modal-fullscreen-sm-down .modal-footer {
-        border-radius: 0;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .modal-fullscreen-md-down {
-        width: 100vw;
-        max-width: none;
-        height: 100%;
-        margin: 0;
-    }
-    .modal-fullscreen-md-down .modal-content {
-        height: 100%;
-        border: 0;
-        border-radius: 0;
-    }
-    .modal-fullscreen-md-down .modal-header {
-        border-radius: 0;
-    }
-    .modal-fullscreen-md-down .modal-body {
-        overflow-y: auto;
-    }
-    .modal-fullscreen-md-down .modal-footer {
-        border-radius: 0;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .modal-fullscreen-lg-down {
-        width: 100vw;
-        max-width: none;
-        height: 100%;
-        margin: 0;
-    }
-    .modal-fullscreen-lg-down .modal-content {
-        height: 100%;
-        border: 0;
-        border-radius: 0;
-    }
-    .modal-fullscreen-lg-down .modal-header {
-        border-radius: 0;
-    }
-    .modal-fullscreen-lg-down .modal-body {
-        overflow-y: auto;
-    }
-    .modal-fullscreen-lg-down .modal-footer {
-        border-radius: 0;
-    }
-}
-
-@media (max-width: 1199.98px) {
-    .modal-fullscreen-xl-down {
-        width: 100vw;
-        max-width: none;
-        height: 100%;
-        margin: 0;
-    }
-    .modal-fullscreen-xl-down .modal-content {
-        height: 100%;
-        border: 0;
-        border-radius: 0;
-    }
-    .modal-fullscreen-xl-down .modal-header {
-        border-radius: 0;
-    }
-    .modal-fullscreen-xl-down .modal-body {
-        overflow-y: auto;
-    }
-    .modal-fullscreen-xl-down .modal-footer {
-        border-radius: 0;
-    }
-}
-
-@media (max-width: 1399.98px) {
-    .modal-fullscreen-xxl-down {
-        width: 100vw;
-        max-width: none;
-        height: 100%;
-        margin: 0;
-    }
-    .modal-fullscreen-xxl-down .modal-content {
-        height: 100%;
-        border: 0;
-        border-radius: 0;
-    }
-    .modal-fullscreen-xxl-down .modal-header {
-        border-radius: 0;
-    }
-    .modal-fullscreen-xxl-down .modal-body {
-        overflow-y: auto;
-    }
-    .modal-fullscreen-xxl-down .modal-footer {
-        border-radius: 0;
-    }
-}
-
+@import "components/_table";
+@import "components/_modal";
 .form-control {
     display: block;
     width: 100%;
@@ -678,392 +289,10 @@ textarea.form-control-lg {
     border-radius: 0.25rem;
 }
 
-@import "components/_card.scss";
-body {
-    @include media(small) {
-        padding: 2rem;
-    }
-}
-
-.grid {
-    display: grid;
-    width: 114rem;
-    grid-gap: 6rem;
-    grid-template-columns: repeat( auto-fit, minmax(10rem, 1fr));
-    align-items: start;
-    @include media(small) {
-        grid-gap: 3rem;
-    }
-    &_item {
-        background-color: #fff;
-        border-radius: .4rem;
-        overflow: hidden;
-        box-shadow: 0 3rem 6rem rgba(0, 0, 0, .1);
-        cursor: pointer;
-        transition: $transition;
-        &:hover {
-            transform: translateY(-.5%);
-            box-shadow: 0 4rem 8rem rgba(0, 0, 0, -2);
-        }
-    }
-}
-
-.card {
-    &_img {
-        display: block;
-        width: 100%;
-        height: 18rem;
-        object-fit: cover;
-    }
-    &_content {
-        padding: 3rem 3rem;
-    }
-    &_header {
-        font-size: 1.5rem;
-        letter-spacing: .1rem;
-        line-height: 1.7;
-        color: darken($color-text, 1%);
-        margin-bottom: 2.5rem;
-    }
-    &_btn {
-        display: block;
-        width: 100%;
-        padding: 1.5rem;
-        font-size: 2rem;
-        text-align: center;
-        color: $color-btn-text;
-        background-color: $color-btn-background;
-        border: none;
-        border-radius: .4rem;
-        transition: $transition;
-        cursor: pointer;
-    }
-    span {
-        margin-left: 1rem;
-        transition: $transition;
-    }
-    &:hover,
-    &:active {
-        background-color: darken( $color-btn-background, 2%);
-        span {
-            margin-left: 1.5rem;
-        }
-    }
-}
-
+@import "components/_card";
 // Custom utility classes
-.p-1 {
-    padding: $padding-1 !important;
-}
-
-.p-2 {
-    padding: $padding-2 !important;
-}
-
-.p-3 {
-    padding: $padding-3 !important;
-}
-
-.p-4 {
-    padding: $padding-4 !important;
-}
-
-.p-5 {
-    padding: $padding-5 !important;
-}
-
-//left
-.pl-1 {
-    padding-left: $padding-1 !important;
-}
-
-.pl-2 {
-    padding-left: $padding-2 !important;
-}
-
-.pl-3 {
-    padding-left: $padding-3 !important;
-}
-
-.pl-4 {
-    padding-left: $padding-4 !important;
-}
-
-.pl-5 {
-    padding-left: $padding-5 !important;
-}
-
-//right
-.pr-1 {
-    padding-right: $padding-1 !important;
-}
-
-.pr-2 {
-    padding-right: $padding-2 !important;
-}
-
-.pr-3 {
-    padding-right: $padding-3 !important;
-}
-
-.pr-4 {
-    padding-right: $padding-4 !important;
-}
-
-.pr-5 {
-    padding-right: $padding-5 !important;
-}
-
-//top
-.pt-1 {
-    padding-top: $padding-1 !important;
-}
-
-.pt-2 {
-    padding-top: $padding-2 !important;
-}
-
-.pt-3 {
-    padding-top: $padding-3 !important;
-}
-
-.pt-4 {
-    padding-top: $padding-4 !important;
-}
-
-.pt-5 {
-    padding-top: $padding-5 !important;
-}
-
-//bottom
-.pb-1 {
-    padding-bottom: $padding-1 !important;
-}
-
-.pb-2 {
-    padding-bottom: $padding-2 !important;
-}
-
-.pb-3 {
-    padding-bottom: $padding-3 !important;
-}
-
-.pb-4 {
-    padding-bottom: $padding-4 !important;
-}
-
-.pb-5 {
-    padding-bottom: $padding-5 !important;
-}
-
-//left & right 
-.px-1 {
-    padding-left: $padding-1 !important;
-    padding-right: $padding-1 !important;
-}
-
-.px-2 {
-    padding-left: $padding-2 !important;
-    padding-right: $padding-2 !important;
-}
-
-.px-3 {
-    padding-left: $padding-3 !important;
-    padding-right: $padding-3 !important;
-}
-
-.px-4 {
-    padding-left: $padding-4 !important;
-    padding-right: $padding-4 !important;
-}
-
-.px-5 {
-    padding-left: $padding-5 !important;
-    padding-right: $padding-5 !important;
-}
-
-//top & bottom
-.py-1 {
-    padding-top: $padding-1 !important;
-    padding-bottom: $padding-1 !important;
-}
-
-.py-2 {
-    padding-top: $padding-2 !important;
-    padding-bottom: $padding-2 !important;
-}
-
-.py-3 {
-    padding-top: $padding-3 !important;
-    padding-bottom: $padding-3 !important;
-}
-
-.py-4 {
-    padding-top: $padding-4 !important;
-    padding-bottom: $padding-4 !important;
-}
-
-.py-5 {
-    padding-top: $padding-5 !important;
-    padding-bottom: $padding-5 !important;
-}
-
-.m-1 {
-    margin: $spacer-1 !important;
-}
-
-.m-2 {
-    margin: $spacer-2 !important;
-}
-
-.m-3 {
-    margin: $spacer-3 !important;
-}
-
-.m-4 {
-    margin: $spacer-4 !important;
-}
-
-.m-5 {
-    margin: $spacer-5 !important;
-}
-
-//left 
-.ml-1 {
-    margin-left: $spacer-1 !important;
-}
-
-.ml-2 {
-    margin-left: $spacer-2 !important;
-}
-
-.ml-3 {
-    margin-left: $spacer-3 !important;
-}
-
-.ml-4 {
-    margin-left: $spacer-4 !important;
-}
-
-.ml-5 {
-    margin-left: $spacer-5 !important;
-}
-
-//right
-.mr-1 {
-    margin-right: $spacer-1 !important;
-}
-
-.mr-2 {
-    margin-right: $spacer-2 !important;
-}
-
-.mr-3 {
-    margin-right: $spacer-3 !important;
-}
-
-.mr-4 {
-    margin-right: $spacer-4 !important;
-}
-
-.mr-5 {
-    margin-right: $spacer-5 !important;
-}
-
-//top
-.mt-1 {
-    margin-top: $spacer-1 !important;
-}
-
-.mt-2 {
-    margin-top: $spacer-2 !important;
-}
-
-.mt-3 {
-    margin-top: $spacer-3 !important;
-}
-
-.mt-4 {
-    margin-top: $spacer-4 !important;
-}
-
-.mt-5 {
-    margin-top: $spacer-5 !important;
-}
-
-//bottom
-.mb-1 {
-    margin-bottom: $spacer-1 !important;
-}
-
-.mb-2 {
-    margin-bottom: $spacer-2 !important;
-}
-
-.mb-3 {
-    margin-bottom: $spacer-3 !important;
-}
-
-.mb-4 {
-    margin-bottom: $spacer-4 !important;
-}
-
-.mb-5 {
-    margin-bottom: $spacer-5 !important;
-}
-
-//left & right 
-.mx-1 {
-    margin-left: $spacer-1 !important;
-    margin-right: $spacer-1 !important;
-}
-
-.mx-2 {
-    margin-left: $spacer-2 !important;
-    margin-right: $spacer-2 !important;
-}
-
-.mx-3 {
-    margin-left: $spacer-3 !important;
-    margin-right: $spacer-3 !important;
-}
-
-.mx-4 {
-    margin-left: $spacer-4 !important;
-    margin-right: $spacer-4 !important;
-}
-
-.mx-5 {
-    margin-left: $spacer-5 !important;
-    margin-right: $spacer-5 !important;
-}
-
-//top & bottom
-.my-1 {
-    margin-top: $spacer-1 !important;
-    margin-bottom: $spacer-1 !important;
-}
-
-.my-2 {
-    margin-top: $spacer-2 !important;
-    margin-bottom: $spacer-2 !important;
-}
-
-.my-3 {
-    margin-top: $spacer-3 !important;
-    margin-bottom: $spacer-3 !important;
-}
-
-.my-4 {
-    margin-top: $spacer-4 !important;
-    margin-bottom: $spacer-4 !important;
-}
-
-.my-5 {
-    margin-top: $spacer-5 !important;
-    margin-bottom: $spacer-5 !important;
-}
-
+@import "components/_padding";
+@import "components/_margin";
 .navbar {
     position: relative;
     display: flex;
