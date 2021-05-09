@@ -85,3 +85,13 @@
         }
     }
 }
+
+@mixin marginX($value) {
+    margin-left: $value !important;
+    margin-right: $value !important;
+}
+
+@mixin marginY($value) {
+    margin-top: $value !important;
+    margin-bottom: $value !important;
+}

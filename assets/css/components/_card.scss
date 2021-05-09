@@ -175,12 +175,11 @@
     }
 }
 
-body {
-    @include media(small) {
-        padding: 2rem;
-    }
-}
-
+// body {
+//     @include media(small) {
+//         padding: 2rem;
+//     }
+// }
 .grid {
     display: grid;
     width: 114rem;
@@ -190,7 +189,7 @@ body {
     @include media(small) {
         grid-gap: 3rem;
     }
-    &_item {
+    &-item {
         background-color: #fff;
         border-radius: .4rem;
         overflow: hidden;
@@ -205,23 +204,40 @@ body {
 }
 
 .card {
-    &_img {
+    background-color: #fff;
+    border-radius: .4rem;
+    overflow: hidden;
+    box-shadow: 0 3rem 6rem rgba(0, 0, 0, .1);
+    cursor: pointer;
+    transition: $transition;
+    &:hover {
+        transform: translateY(-.5%);
+        box-shadow: 0 4rem 8rem rgba(0, 0, 0, -2);
+    }
+    &-img {
         display: block;
         width: 100%;
         height: 18rem;
         object-fit: cover;
     }
-    &_content {
+    &-content {
         padding: 3rem 3rem;
     }
-    &_header {
+    &-header {
         font-size: 1.5rem;
         letter-spacing: .1rem;
         line-height: 1.7;
         color: darken($color-text, 1%);
         margin-bottom: 2.5rem;
     }
-    &_btn {
+    &-text {
+        font-size: 1.5rem;
+        letter-spacing: .1rem;
+        line-height: 1.7;
+        color: darken($color-text, 1%);
+        margin-bottom: 2.5rem;
+    }
+    &-btn {
         display: block;
         width: 100%;
         padding: 1.5rem;
@@ -233,16 +249,16 @@ body {
         border-radius: .4rem;
         transition: $transition;
         cursor: pointer;
-    }
-    span {
-        margin-left: 1rem;
-        transition: $transition;
-    }
-    &:hover,
-    &:active {
-        background-color: darken( $color-btn-background, 2%);
         span {
-            margin-left: 1.5rem;
+            margin-left: 1rem;
+            transition: $transition;
+        }
+        &:hover,
+        &:active {
+            background-color: darken( $color-btn-background, 2%);
+            span {
+                margin-left: 1.5rem;
+            }
         }
     }
 }
