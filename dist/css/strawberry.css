@@ -889,66 +889,6 @@ button:not(:disabled),
   background-color: #10ac84;
 }
 
-.btn-light-primary {
-  background-color: #bce0fc;
-  color: #0876ca;
-}
-
-.btn-light-primary:hover {
-  color: #fff;
-  background-color: #0984e3;
-}
-
-.btn-light-secondary {
-  background-color: #b2b9bc;
-  color: #576164;
-}
-
-.btn-light-secondary:hover {
-  color: #fff;
-  background-color: #636e72;
-}
-
-.btn-light-danger {
-  background-color: #f9cccc;
-  color: #e83634;
-}
-
-.btn-light-danger:hover {
-  color: #fff;
-  background-color: #eb4d4b;
-}
-
-.btn-light-warning {
-  background-color: #fce3bc;
-  color: #e08e0b;
-}
-
-.btn-light-warning:hover {
-  color: #fff;
-  background-color: #f39c12;
-}
-
-.btn-light-info {
-  background-color: #b5fffd;
-  color: #00b5b0;
-}
-
-.btn-light-info:hover {
-  color: #fff;
-  background-color: #00cec9;
-}
-
-.btn-light-success {
-  background-color: #aaf7e3;
-  color: #0e9572;
-}
-
-.btn-light-success:hover {
-  color: #fff;
-  background-color: #10ac84;
-}
-
 .alert {
   position: relative;
   padding: 1rem 1rem;

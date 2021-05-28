@@ -135,3 +135,27 @@ button:not(:disabled),
 .btn-outline-success {
     @include setOutlineBgColor($success);
 }
+
+.btn-light-primary {
+    @include setLightButton($primary, 40%, 5%);
+}
+
+.btn-light-secondary {
+    @include setLightButton($secondary, 30%, 5%);
+}
+
+.btn-light-danger {
+    @include setLightButton($danger, 28%, 5%);
+}
+
+.btn-light-warning {
+    @include setLightButton($warning, 35%, 5%);
+}
+
+.btn-light-info {
+    @include setLightButton($info, 45%, 5%);
+}
+
+.btn-light-success {
+    @include setLightButton($success, 45%, 5%);
+}

@@ -34,6 +34,15 @@
     }
 }
 
+@mixin setLightButton($baseColor, $lighten, $darken) {
+    background-color: lighten($baseColor, $lighten);
+    color: darken($baseColor, $darken);
+    &:hover {
+        color: #fff;
+        background-color: $baseColor;
+    }
+}
+
 @mixin flexConfiguration() {
     display: flex;
     flex-wrap: wrap;
