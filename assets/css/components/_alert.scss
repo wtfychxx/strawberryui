@@ -12,32 +12,21 @@
 }
 
 .alert-primary {
-    color: darken($primary, 10%);
-    background-color: lighten($primary, 40%);
-    border-color: lighten($primary, 30%);
+    @include alertStyle($primary, 45%, 10%);
 }
 
 .alert-info {
-    color: darken($info, 10%);
-    background-color: lighten($info, 50%);
-    border-color: lighten($info, 30%);
+    @include alertStyle($info, 35%, 15%);
 }
 
 .alert-danger {
-    $danger: #eb3b5a;
-    color: darken($danger, 10%);
-    background-color: lighten($danger, 25%);
-    border-color: lighten($danger, 20%);
+    @include alertStyle($danger, 30%, 10%);
 }
 
 .alert-warning {
-    color: darken($warning, 20%);
-    background-color: lighten($warning, 25%);
-    border-color: lighten($warning, 20%);
+    @include alertStyle($warning, 35%, 15%);
 }
 
 .alert-success {
-    color: darken($success, 10%);
-    background-color: lighten($success, 25%);
-    border-color: lighten($success, 20%);
+    @include alertStyle($success, 35%, 10%);
 }

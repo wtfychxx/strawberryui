@@ -40,19 +40,30 @@ caption {
     -webkit-overflow-scrolling: touch;
 }
 
+.table-striped {
+    @include tableStyle($dark, 60%, 10%, 65%);
+}
+
 .table-primary {
-    @include tableStyle($primary);
+    @include tableStyle($primary, 45%, 30%, 50%);
+}
+
+.table-secondary {
+    @include tableStyle($secondary, 45%, 5%, 50%);
 }
 
 .table-info {
-    @include tableStyle($info);
+    @include tableStyle($info, 45%, 30%, 52%);
 }
 
 .table-danger {
-    $danger: #c23616;
-    @include tableStyle($danger);
+    @include tableStyle($danger, 20%, 20%, 25%);
 }
 
 .table-warning {
-    @include tableStyle($warning);
+    @include tableStyle($warning, 30%, 15%, 50%);
+}
+
+.table-success {
+    @include tableStyle($success, 30%, 15%, 50%);
 }

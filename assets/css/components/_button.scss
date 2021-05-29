@@ -137,15 +137,15 @@ button:not(:disabled),
 }
 
 .btn-light-primary {
-    @include setLightButton($primary, 40%, 5%);
+    @include setLightButton($primary, 45%, 5%);
 }
 
 .btn-light-secondary {
-    @include setLightButton($secondary, 30%, 5%);
+    @include setLightButton($secondary, 45%, 5%);
 }
 
 .btn-light-danger {
-    @include setLightButton($danger, 28%, 5%);
+    @include setLightButton($danger, 30%, 5%);
 }
 
 .btn-light-warning {
@@ -153,7 +153,7 @@ button:not(:disabled),
 }
 
 .btn-light-info {
-    @include setLightButton($info, 45%, 5%);
+    @include setLightButton($info, 48%, 5%);
 }
 
 .btn-light-success {

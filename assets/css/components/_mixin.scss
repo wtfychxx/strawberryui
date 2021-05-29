@@ -53,10 +53,10 @@
     width: $width;
 }
 
-@mixin tableStyle($color) {
+@mixin tableStyle($color, $lighten, $darken, $zebra) {
     td,
     th {
-        color: darken($color, 30%);
+        color: darken($color, $darken);
     }
     td {
         text-align: center;
@@ -68,7 +68,7 @@
         }
     }
     th {
-        background-color: lighten($color, 45%);
+        background-color: lighten($color, $lighten);
         font-weight: 300;
     }
     tr {
@@ -76,9 +76,15 @@
             background-color: white;
         }
         &:nth-child(2n+1) {
-            background-color: lighten($color, 50%);
+            background-color: lighten($color, $zebra);
         }
     }
+}
+
+@mixin alertStyle($baseColor, $lighten, $darken) {
+    color: darken($baseColor, $darken);
+    background-color: lighten($baseColor, $lighten);
+    // border-color: lighten($baseColor, $border);
 }
 
 @mixin mobile ($size: 640px) {

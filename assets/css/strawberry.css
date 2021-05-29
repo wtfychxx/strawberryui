@@ -890,7 +890,7 @@ button:not(:disabled),
 }
 
 .btn-light-primary {
-  background-color: #bce0fc;
+  background-color: #d4ebfd;
   color: #0876ca;
 }
 
@@ -900,7 +900,7 @@ button:not(:disabled),
 }
 
 .btn-light-secondary {
-  background-color: #b2b9bc;
+  background-color: #dbdee0;
   color: #576164;
 }
 
@@ -910,7 +910,7 @@ button:not(:disabled),
 }
 
 .btn-light-danger {
-  background-color: #f9cccc;
+  background-color: #fad5d5;
   color: #e83634;
 }
 
@@ -930,7 +930,7 @@ button:not(:disabled),
 }
 
 .btn-light-info {
-  background-color: #b5fffd;
+  background-color: #c4fffe;
   color: #00b5b0;
 }
 
@@ -964,32 +964,27 @@ button:not(:disabled),
 
 .alert-primary {
   color: #0767b2;
-  background-color: #bce0fc;
-  border-color: #8bcafa;
+  background-color: #d4ebfd;
 }
 
 .alert-info {
-  color: #009b97;
-  background-color: #cefffe;
-  border-color: #68fffb;
+  color: #00827e;
+  background-color: #82fffc;
 }
 
 .alert-danger {
-  color: #dd1739;
-  background-color: #f7afbb;
-  border-color: #f498a8;
+  color: #e6201d;
+  background-color: #fad5d5;
 }
 
 .alert-warning {
-  color: #976008;
-  background-color: #f9cf8b;
-  border-color: #f8c573;
+  color: #b06f09;
+  background-color: #fce3bc;
 }
 
 .alert-success {
   color: #0c7d60;
-  background-color: #4deec5;
-  border-color: #36ecbd;
+  background-color: #7cf3d4;
 }
 
 .align-baseline {
@@ -1495,6 +1490,35 @@ caption {
   -webkit-overflow-scrolling: touch;
 }
 
+.table-striped td,
+.table-striped th {
+  color: #1a1d24;
+}
+
+.table-striped td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-striped td:last-child {
+  font-size: .95rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.table-striped th {
+  background-color: #cacfd9;
+  font-weight: 300;
+}
+
+.table-striped tr:nth-child(2n) {
+  background-color: white;
+}
+
+.table-striped tr:nth-child(2n+1) {
+  background-color: #d9dce4;
+}
+
 .table-primary td,
 .table-primary th {
   color: #032e50;
@@ -1524,6 +1548,35 @@ caption {
   background-color: #edf7fe;
 }
 
+.table-secondary td,
+.table-secondary th {
+  color: #576164;
+}
+
+.table-secondary td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-secondary td:last-child {
+  font-size: .95rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.table-secondary th {
+  background-color: #dbdee0;
+  font-weight: 300;
+}
+
+.table-secondary tr:nth-child(2n) {
+  background-color: white;
+}
+
+.table-secondary tr:nth-child(2n+1) {
+  background-color: #e9ebeb;
+}
+
 .table-info td,
 .table-info th {
   color: #003534;
@@ -1550,12 +1603,12 @@ caption {
 }
 
 .table-info tr:nth-child(2n+1) {
-  background-color: #cefffe;
+  background-color: #d8fffe;
 }
 
 .table-danger td,
 .table-danger th {
-  color: #391006;
+  color: #bb1715;
 }
 
 .table-danger td {
@@ -1570,7 +1623,7 @@ caption {
 }
 
 .table-danger th {
-  background-color: #f8cfc5;
+  background-color: #f5a8a7;
   font-weight: 300;
 }
 
@@ -1579,12 +1632,12 @@ caption {
 }
 
 .table-danger tr:nth-child(2n+1) {
-  background-color: #fbe2dc;
+  background-color: #f8bebe;
 }
 
 .table-warning td,
 .table-warning th {
-  color: #674105;
+  color: #b06f09;
 }
 
 .table-warning td {
@@ -1599,7 +1652,7 @@ caption {
 }
 
 .table-warning th {
-  background-color: #fef7ec;
+  background-color: #fad9a4;
   font-weight: 300;
 }
 
@@ -1609,6 +1662,35 @@ caption {
 
 .table-warning tr:nth-child(2n+1) {
   background-color: white;
+}
+
+.table-success td,
+.table-success th {
+  color: #09664e;
+}
+
+.table-success td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-success td:last-child {
+  font-size: .95rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.table-success th {
+  background-color: #64f1cd;
+  font-weight: 300;
+}
+
+.table-success tr:nth-child(2n) {
+  background-color: white;
+}
+
+.table-success tr:nth-child(2n+1) {
+  background-color: #c2f9eb;
 }
 
 .modal-open {
