@@ -1225,7 +1225,7 @@
                 Manipulator.setDataAttribute(this._menu, 'popper', 'none');
             } else {
                 if (typeof Popper === 'undefined') {
-                    throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org)');
+                    throw new TypeError('Strawberry\'s dropdowns require Popper (https://popper.js.org)');
                 }
 
                 let referenceElement = this._element;
@@ -2111,7 +2111,6 @@
 
     EventHandler.on(document, EVENT_CLICK_DATA_API$2, SELECTOR_DATA_TOGGLE$2, function(event) {
         const target = getElementFromSelector(this);
-        console.log(target);
 
         if (this.tagName === 'A' || this.tagName === 'AREA') {
             event.preventDefault();
