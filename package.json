@@ -6,7 +6,7 @@
     "name": "strawberryui",
     "version": "1.0.0",
     "description": "bootstrap-5 with vanillajs",
-    "main": "example/index.html",
+    "main": "example/main.html?content=index.html",
     "devDependencies": {},
     "scripts": {
         "dev": "http-server -p 4000 -o",
