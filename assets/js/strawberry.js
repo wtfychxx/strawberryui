@@ -1591,15 +1591,7 @@
         event.preventDefault();
         Dropdown.dropdownInterface(this);
     });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     * add .Dropdown to jQuery only if jQuery is present
-     */
-
     defineJQueryPlugin(NAME$7, Dropdown);
-
 
     // modal event js
 

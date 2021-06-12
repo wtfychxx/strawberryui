@@ -5,22 +5,26 @@ $danger: #eb4d4b;
 $warning: #f39c12;
 $info: #00cec9;
 $success: #10ac84;
-$gradient-primary: #0097e6,
-#4834d4;
-$gradient-secondary: #a4b0be,
-#57606f;
-$gradient-danger: #ff6b81,
-#c23616;
-$gradient-warning: #f9ca24,
-#ee5a24;
+$gradient-primary: #00f0ff,
+#0050ff;
+$gradient-secondary: #bdc3c7,
+#2c3e50;
+$gradient-danger: #fe0098,
+#ff003d;
+$gradient-warning: #ffe600,
+#ff4d00;
 $gradient-info: #00d8d6,
 #10ac84;
-$gradient-info: #00d8d6,
-#10ac84;
-$gradient-success: #2ecc71,
-#16a085;
+$gradient-info: #00d1ff,
+#00bf58;
+$gradient-success: #71b280,
+#134e5e;
 $light: #f1f2f6;
 $dark: #2f3542;
+// form variable
+$label-color: #6c757d;
+$border-color: #ced4da;
+$border-color-focus: #86b7fe;
 // gutter variables
 $gutter-x: 1.5rem;
 $gutter-y: 0;
