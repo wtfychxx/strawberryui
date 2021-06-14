@@ -254,26 +254,23 @@
     white-space: nowrap;
     background-color: transparent;
     border: 0;
-}
-
-.dropdown-item:hover,
-.dropdown-item:focus {
-    color: #1e2125;
-    background-color: #e9ecef;
-}
-
-.dropdown-item.active,
-.dropdown-item:active {
-    color: #fff;
-    text-decoration: none;
-    background-color: #0d6efd;
-}
-
-.dropdown-item.disabled,
-.dropdown-item:disabled {
-    color: #adb5bd;
-    pointer-events: none;
-    background-color: transparent;
+    &:hover,
+    &:focus {
+        color: #1e2125;
+        background-color: #e9ecef;
+    }
+    &.active,
+    &:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: #0d6efd;
+    }
+    &.disabled,
+    &:disabled {
+        color: #adb5bd;
+        pointer-events: none;
+        background-color: transparent;
+    }
 }
 
 .dropdown-menu.show {
@@ -299,37 +296,30 @@
     color: #dee2e6;
     background-color: #343a40;
     border-color: rgba(0, 0, 0, 0.15);
-}
-
-.dropdown-menu-dark .dropdown-item {
-    color: #dee2e6;
-}
-
-.dropdown-menu-dark .dropdown-item:hover,
-.dropdown-menu-dark .dropdown-item:focus {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-.dropdown-menu-dark .dropdown-item.active,
-.dropdown-menu-dark .dropdown-item:active {
-    color: #fff;
-    background-color: #0d6efd;
-}
-
-.dropdown-menu-dark .dropdown-item.disabled,
-.dropdown-menu-dark .dropdown-item:disabled {
-    color: #adb5bd;
-}
-
-.dropdown-menu-dark .dropdown-divider {
-    border-color: rgba(0, 0, 0, 0.15);
-}
-
-.dropdown-menu-dark .dropdown-item-text {
-    color: #dee2e6;
-}
-
-.dropdown-menu-dark .dropdown-header {
-    color: #adb5bd;
+    & .dropdown-item {
+        color: #dee2e6;
+    }
+    & .dropdown-item:hover,
+    & .dropdown-item:focus {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+    & .dropdown-item.active,
+    & .dropdown-item:active {
+        color: #fff;
+        background-color: #0d6efd;
+    }
+    & .dropdown-item.disabled,
+    & .dropdown-item:disabled {
+        color: #adb5bd;
+    }
+    & .dropdown-divider {
+        border-color: rgba(0, 0, 0, 0.15);
+    }
+    & .dropdown-item-text {
+        color: #dee2e6;
+    }
+    & .dropdown-header {
+        color: #adb5bd;
+    }
 }
