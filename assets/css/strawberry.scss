@@ -16,12 +16,14 @@
 @import "components/_table";
 // scss for modals
 @import "components/_modal";
-// scss for form
-@import "components/form";
 // scss for card
 @import "components/_card";
 // Custom utility classes
 @import "components/_navbar";
+// scss for form
+@import "components/_form";
+// scss for dropdown
+@import "components/_dropdown";
 .fade {
     transition: opacity 0.15s linear;
 }

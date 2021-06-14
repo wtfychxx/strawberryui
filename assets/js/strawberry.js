@@ -32,11 +32,11 @@
         if (!selector || selector === '#') {
             let hrefAttr = element.getAttribute('href');
 
-            if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startWith('.')) {
+            if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.starstWith('.')) {
                 return null;
             }
 
-            if (hrefAttr.includes('#' && !hrefAttr.startWith('#'))) {
+            if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
                 hrefAttr = '#' + hrefAttr.split('#')[1];
             }
 
@@ -601,42 +601,23 @@
     };
 
     // SelectorEngine.js
-    let NODE_TEXT = 3;
+    const NODE_TEXT = 3;
     const SelectorEngine = {
-        matches: (element, selector) => {
-            return element.matches(selector);
+        find(selector, element = document.documentElement) {
+            return [].concat(...Element.prototype.querySelectorAll.call(element, selector));
         },
-        find: (selector, element) => {
-            let _ref;
-
-            if (element === void 0) {
-                element = document.documentElement;
-            }
-
-            return (_ref = []).concat.apply(_ref, Element.prototype.querySelectorAll.call(element, selector));
+        findOne(selector, element = document.documentElement) {
+            return Element.prototype.querySelector.call(element, selector)
         },
-        findOne: (selector, element) => {
-            if (element === void 0) {
-                element = document.documentElement;
-            }
-
-            return Element.prototype.querySelector.call(element, selector);
+        children(element, selector) {
+            return [].concat(...element.children).filter(child => child.matches(selector));
         },
-        children: (element, selector) => {
-            let _ref2;
-
-            let children = (_ref2 = []).concat.apply(_ref2, element.children);
-
-            return children.filter((child) => {
-                return child.matches(selector);
-            });
-        },
-        parents: (element, selector) => {
-            let parents = [];
+        parents(element, selector) {
+            const parents = [];
             let ancestor = element.parentNode;
 
             while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
-                if (this.matches(ancestor, selector)) {
+                if (ancestor.matches(selector)) {
                     parents.push(ancestor);
                 }
 
@@ -645,7 +626,7 @@
 
             return parents;
         },
-        prev: (element, selector) => {
+        prev(element, selector) {
             let previous = element.previousElementSibling;
 
             while (previous) {
@@ -658,11 +639,11 @@
 
             return [];
         },
-        next: (element, selector) => {
+        next(element, selector) {
             let next = element.nextElementSibling;
 
             while (next) {
-                if (this.matches(next, selector)) {
+                if (next.matches(selector)) {
                     return [next];
                 }
 

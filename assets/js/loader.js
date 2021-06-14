@@ -7,33 +7,36 @@ const load = (e) => {
 
     const href = e.target.getAttribute('href');
 
-    const hrefParts = href.split('=');
-    const container = hrefParts[0].substr(1);
-    const source = hrefParts[1];
+    if (href.indexOf('#') === -1) {
+        const hrefParts = href.split('=');
+        const container = hrefParts[0].substr(1);
+        const source = hrefParts[1];
 
-    const request = new XMLHttpRequest();
+        const request = new XMLHttpRequest();
 
-    request.onreadystatechange = () => {
-        if (request.readyState < 4) {
-            // handle preload
-            return;
+        request.onreadystatechange = () => {
+            if (request.readyState < 4) {
+                // handle preload
+                return;
+            }
+            if (request.status !== 200) {
+                // handle error http
+                return;
+            }
+            if (request.readyState === 4) {
+                successCallBack();
+            }
         }
-        if (request.status !== 200) {
-            // handle error http
-            return;
+
+        request.open('GET', source, true);
+        request.send('');
+
+        successCallBack = () => {
+            document.getElementById(container).innerHTML = request.responseText;
+
+            history.pushState('', '', `?${container}=${source}`);
         }
-        if (request.readyState === 4) {
-            successCallBack();
-        }
-    }
 
-    request.open('GET', source, true);
-    request.send('');
-
-    successCallBack = () => {
-        document.getElementById(container).innerHTML = request.responseText;
-
-        history.pushState('', '', `?${container}=${source}`);
     }
 }
 
