@@ -1,0 +1,44 @@
+.toast {
+    width: 350px;
+    max-width: 100%;
+    font-size: .875rem;
+    pointer-events: auto;
+    background-color: rgba(255, 255, 255, .85);
+    background-clip: padding-box;
+    bottom: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    &:not(.showing):not(.show) {
+        opacity: 0;
+    }
+    &.hide {
+        display: none;
+    }
+    &-container {
+        width: max-content;
+        max-width: 100%;
+        pointer-events: none;
+        &> :not(:last-child) {
+            margin-bottom: .75rem;
+        }
+    }
+    &-header {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75em;
+        color: $secondary;
+        background-color: rgba(255, 255, 255, .85);
+        background-clip: padding-box;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-top-left-radius: calc(.25rem - 1px);
+        border-top-right-radius: calc(.25rem - 1px);
+        & .btn-close {
+            margin-right: -.375rem;
+            margin-left: 0.75rem;
+        }
+    }
+    &-body {
+        padding: 0.75rem;
+        word-wrap: break-word;
+    }
+}

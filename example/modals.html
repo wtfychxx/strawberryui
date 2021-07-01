@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="icon" href="../strawberry-logo.png" type="image/x-icon">
+    <link rel="icon" href="../assets/image/strawberry-logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/strawberry.css">
     <link href="https://unpkg.com/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
     <script src="../assets/js/strawberry.js"></script>
@@ -14,45 +14,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-st-toggle="collapse" data-st-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link nav-loader active" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-st-toggle="dropdown" aria-expanded="false">
-                            Components
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="nav-link nav-loader" href="card.html"> Flip Card </a></li>
-                            <li class="nav-item">
-                                <a class="nav-link nav-loader" href="modals.html">Modal</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link nav-loader" href="table.html">Table</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-st-toggle="dropdown" aria-expanded="false">
-                          Button
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="nav-link nav-loader" href="button.html"> Normal Button </a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar-content">
+
     </nav>
 
     <div class="container mt-4 bg-light p-2" id="content">
@@ -86,7 +49,9 @@
     </div>
 </div>
 
+<script src="../assets/js/tools.js"></script>
 <script>
+    tools.getNavbar();
     document.getElementById('btn_show_modal').addEventListener('click', () => {
         const addModal = document.getElementById('modal_add');
         const strawberryModal = new strawberry.Modal(addModal);

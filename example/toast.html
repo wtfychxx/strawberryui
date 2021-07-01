@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="../strawberry-logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/strawberry.css">
+    <link href="https://unpkg.com/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
+    <script src="../assets/js/strawberry.js"></script>
+    <!-- <script src="../assets/js/loader.js" defer></script> -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar-content">
+
+    </nav>
+
+    <div class="container mt-4 bg-light p-2" id="content">
+        <div class="row">
+            <div class="col-lg-3">
+                <button class="btn btn-success" id="btn_show_toasts">Show Toast</button>
+            </div>
+        </div>
+    </div>
+    <div class="toast bg-primary text-dark" id="welcome_toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="..." class="rounded me-2" alt="...">
+            <strong class="me-auto">Bootstrap</strong>
+            <small class="text-muted">11 mins ago</small>
+            <button type="button" class="btn-close" data-st-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+</body>
+
+<script src="../assets/js/tools.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        tools.getNavbar();
+        const toastButton = document.getElementById('btn_show_toasts');
+
+        toastButton.addEventListener('click', () => {
+            const myToast = document.querySelector('#welcome_toast');
+            const toast = new strawberry.Toast(myToast, {
+                delay: 3000
+            })
+
+            toast.show();
+        });
+    });
+</script>
